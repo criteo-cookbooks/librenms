@@ -1,0 +1,16 @@
+# Configuration file for the rrdcached service.
+
+#
+# User service will run as
+#
+RRDC_USER=<%= @user %>
+
+#
+# To pass additional options, set OPTIONS here
+#
+OPTIONS="<%= @options %> -s <%= @user %> -U <%= @user %> -G <%= @group %>"
+
+#
+# Socket permissions
+#
+SOCKPERMS=0660
