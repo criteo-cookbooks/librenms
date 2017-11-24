@@ -1,4 +1,4 @@
-name 'chef-librenms'
+name 'librenms'
 maintainer 'Criteo'
 maintainer_email 'use_github_issues@criteo.com'
 license 'All rights reserved'
