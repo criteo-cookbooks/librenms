@@ -23,9 +23,12 @@ default['librenms']['contact'] = 'webmaster@example.com'
 default['librenms']['user_admin'] = 'admin'
 default['librenms']['user_pass'] = 'admin'
 
-# repo for php7
-default['librenms']['additional_repo']['url'] = 'https://repo.webtatic.com/yum/el7/$basearch/'
-default['librenms']['additional_repo']['desc'] = 'Webtatic repo EL7'
+# additional repos
+default['librenms']['repo_webtatic']['url'] = 'https://repo.webtatic.com/yum/el7/$basearch/'
+default['librenms']['repo_webtatic']['desc'] = 'Webtatic repo EL7'
+default['librenms']['repo_rpmforge']['mirrorlist'] = 'http://mirrorlist.repoforge.org/el7/mirrors-rpmforge'
+default['librenms']['repo_rpmforge']['url'] = 'http://mirrorlist.repoforge.org/el7/mirrors-rpmforge'
+default['librenms']['repo_rpmforge']['desc'] = 'RPMForge repo EL7'
 
 # downloading librenms
 default['librenms']['install']['url'] = 'https://github.com/librenms/librenms/archive/'

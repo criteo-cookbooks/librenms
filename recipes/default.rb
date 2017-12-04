@@ -85,8 +85,16 @@ when 'rhel'
   end
 
   yum_repository 'webtatic' do
-    description (node['librenms']['additional_repo']['desc']).to_s
-    baseurl (node['librenms']['additional_repo']['url']).to_s
+    description (node['librenms']['repo_webtatic']['desc']).to_s
+    baseurl (node['librenms']['repo_webtatic']['url']).to_s
+    gpgcheck false
+    enabled true
+  end
+
+  yum_repository 'rpmforge' do
+    description (node['librenms']['repo_rpmforge']['desc']).to_s
+    baseurl (node['librenms']['repo_rpmforge']['url']).to_s
+    mirrorlist (node['librenms']['repo_rpmforge']['mirrorlist']).to_s
     gpgcheck false
     enabled true
   end
