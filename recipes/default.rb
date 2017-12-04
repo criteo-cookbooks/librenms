@@ -136,7 +136,7 @@ when 'rhel'
 
   package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common
              net-snmp ImageMagick jwhois nmap mtr rrdtool MySQL-python net-snmp-utils
-             cronie php70w-mcrypt fping git] do
+             cronie php70w-mcrypt fping git unzip] do
     action :install
   end
 
