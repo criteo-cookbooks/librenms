@@ -89,14 +89,15 @@ when 'rhel'
     baseurl (node['librenms']['repo_webtatic']['url']).to_s
     gpgcheck false
     enabled true
+    only_if { node.normal['librenms']['repo_webtatic']['enabled'] = 'true' }
   end
 
-  yum_repository 'rpmforge' do
-    description (node['librenms']['repo_rpmforge']['desc']).to_s
-    baseurl (node['librenms']['repo_rpmforge']['url']).to_s
-    mirrorlist (node['librenms']['repo_rpmforge']['mirrorlist']).to_s
+  yum_repository 'epel' do
+    description (node['librenms']['repo_epel']['desc']).to_s
+    baseurl (node['librenms']['repo_epel']['url']).to_s
     gpgcheck false
     enabled true
+    only_if { node.normal['librenms']['repo_epel']['enabled'] = 'true' }
   end
 
   package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common
