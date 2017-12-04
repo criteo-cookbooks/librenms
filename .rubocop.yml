@@ -73,7 +73,7 @@ Metrics/MethodLength:
   Max: 40
 
 # This rule generates many false positive
-Style/VariableNumber:
+Naming/VariableNumber:
   Enabled: false
 
 # This metric is hard to grasp but let's avoid delirious code
@@ -106,7 +106,7 @@ Style/Documentation:
   Enabled: false
 
 # Filename forces snake case for file names, we just want consistency for now
-Style/FileName:
+Naming/FileName:
   Enabled: false
 
 # We don't want CRLF for ruby files, even on windows!

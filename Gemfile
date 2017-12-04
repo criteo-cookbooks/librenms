@@ -1,6 +1,13 @@
-source 'http://nexus-par.criteo.prod/content/groups/rubygems/'
-# Common gems for development and testing:
-gem 'goag'
+source 'https://rubygems.org'
+
+gem 'berkshelf'
+gem 'kitchen-vagrant'
+gem 'chefspec'
+gem 'rake'
+gem 'foodcritic'
+gem 'chef-zero-scheduled-task'
+gem 'chef'
+
 gem 'kitchen-transport-speedy'
 group :ec2 do
   gem 'test-kitchen'
@@ -11,4 +18,4 @@ group :ec2 do
 end
 
 # Other gems should go after this comment
-gem 'rubocop', '=0.50.0'
+gem 'rubocop', '=0.51.0'
