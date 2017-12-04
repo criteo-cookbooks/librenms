@@ -17,49 +17,6 @@ librenms_version = node['librenms']['install']['version']
 librenms_file = File.join(librenms_version, '.zip')
 librenms_archive = File.join(tmpdir, librenms_version)
 
-group librenms_group do
-  action :create
-end
-
-user librenms_username do
-  action :create
-  comment 'LibreNMS user'
-  group librenms_group
-  home librenms_homedir
-  shell '/bin/bash'
-  manage_home false
-end
-
-remote_file "#{librenms_archive}.zip" do
-  source "#{node['librenms']['install']['url']}/#{librenms_file}"
-  owner librenms_username
-  group librenms_group
-  mode '0755'
-  not_if { ::File.exist? librenms_archive }
-end
-
-execute 'extract librenms archive' do
-  command "unzip -o #{librenms_archive} -d #{librenms_rootdir}"
-  user 'root'
-  group 'root'
-  umask '022'
-  not_if { ::File.exist? File.join(librenms_homedir, 'README.md') }
-end
-
-execute 'create symlink' do
-  command "ln -s #{node['librenms']['root_dir']}/librenms-#{librenms_version} #{librenms_homedir}"
-  user 'root'
-  group 'root'
-  not_if { ::File.exist? librenms_homedir }
-end
-
-directory "#{librenms_homedir}/rrd" do
-  owner librenms_username
-  group librenms_group
-  mode '0755'
-  action :create
-end
-
 case node['platform_family']
 when 'debian'
 
@@ -136,7 +93,7 @@ when 'rhel'
 
   package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common
              net-snmp ImageMagick jwhois nmap mtr rrdtool MySQL-python net-snmp-utils
-             cronie php70w-mcrypt fping git] do
+             cronie php70w-mcrypt fping git unzip] do
     action :install
   end
 
@@ -144,6 +101,49 @@ when 'rhel'
     filename 'libphp7.so'
   end
 
+end
+
+group librenms_group do
+  action :create
+end
+
+user librenms_username do
+  action :create
+  comment 'LibreNMS user'
+  group librenms_group
+  home librenms_homedir
+  shell '/bin/bash'
+  manage_home false
+end
+
+remote_file "#{librenms_archive}.zip" do
+  source "#{node['librenms']['install']['url']}/#{librenms_file}"
+  owner librenms_username
+  group librenms_group
+  mode '0755'
+  not_if { ::File.exist? librenms_archive }
+end
+
+execute 'extract librenms archive' do
+  command "/usr/bin/unzip -o #{librenms_archive} -d #{librenms_rootdir}"
+  user 'root'
+  group 'root'
+  umask '022'
+  not_if { ::File.exist? File.join(librenms_homedir, 'README.md') }
+end
+
+execute 'create symlink' do
+  command "ln -s #{node['librenms']['root_dir']}/librenms-#{librenms_version} #{librenms_homedir}"
+  user 'root'
+  group 'root'
+  not_if { ::File.exist? librenms_homedir }
+end
+
+directory "#{librenms_homedir}/rrd" do
+  owner librenms_username
+  group librenms_group
+  mode '0755'
+  action :create
 end
 
 template librenms_phpconf.to_s do
