@@ -38,14 +38,30 @@ default['librenms']['install']['tmpdir'] = '/var/tmp/'
 
 # cron jobs mgmt
 default['librenms']['config']['poller_threads'] = '8'
-default['librenms']['cron']['discovery_all'] = true
-default['librenms']['cron']['discovery_new'] = true
-default['librenms']['cron']['poller'] = true
-default['librenms']['cron']['daily'] = true
-default['librenms']['cron']['alerts'] = true
-default['librenms']['cron']['poll-billing'] = true
-default['librenms']['cron']['billing-calculate'] = true
-default['librenms']['cron']['check'] = true
+default['librenms']['cron']['discovery_all']['enabled'] = true
+default['librenms']['cron']['discovery_all']['hour'] = '*/6'
+default['librenms']['cron']['discovery_all']['minute'] = '33'
+default['librenms']['cron']['discovery_new']['enabled'] = true
+default['librenms']['cron']['discovery_new']['hour'] = '*'
+default['librenms']['cron']['discovery_new']['minute'] = '*/5'
+default['librenms']['cron']['poller']['enabled'] = true
+default['librenms']['cron']['poller']['hour'] = '*'
+default['librenms']['cron']['poller']['minute'] = '*/5'
+default['librenms']['cron']['daily']['enabled'] = true
+default['librenms']['cron']['daily']['hour'] = '*'
+default['librenms']['cron']['daily']['minute'] = '15'
+default['librenms']['cron']['alerts']['enabled'] = true
+default['librenms']['cron']['alerts']['hour'] = '*'
+default['librenms']['cron']['alerts']['minute'] = '*'
+default['librenms']['cron']['poll-billing']['enabled'] = true
+default['librenms']['cron']['poll-billing']['hour'] = '*'
+default['librenms']['cron']['poll-billing']['minute'] = '*/5'
+default['librenms']['cron']['billing-calculate']['enabled'] = true
+default['librenms']['cron']['billing-calculate']['hour'] = '*'
+default['librenms']['cron']['billing-calculate']['minute'] = '01'
+default['librenms']['cron']['check']['enabled'] = true
+default['librenms']['cron']['check']['hour'] = '*'
+default['librenms']['cron']['check']['minute'] = '*/5'
 
 # rrdcached
 default['librenms']['rrdcached']['enabled'] = false

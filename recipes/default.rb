@@ -224,71 +224,6 @@ web_app 'librenms' do
   allow_override (node['librenms']['web']['override']).to_s
 end
 
-# cron mgmt to be able to disable them one by one if not wanted.
-cron 'discovery all' do
-  command "#{librenms_homedir}/discovery.php -h all >> /dev/null 2>&1"
-  hour '*/6'
-  minute '33'
-  user librenms_username
-  only_if { node.normal['librenms']['cron']['discovery_all'] = 'true' }
-end
-
-cron 'discover new' do
-  command "#{librenms_homedir}/discovery.php -h new >> /dev/null 2>&1"
-  hour '*'
-  minute '*/5'
-  user librenms_username
-  only_if { node.normal['librenms']['cron']['discovery_new'] = 'true' }
-end
-
-cron 'poller wrapper' do
-  command "#{librenms_homedir}/cronic #{librenms_homedir}/poller-wrapper.py #{node['librenms']['config']['poller_threads']}"
-  hour '*'
-  minute '*/5'
-  user librenms_username
-  only_if { node.normal['librenms']['cron']['poller'] = 'true' }
-end
-
-cron 'daily' do
-  command "#{librenms_homedir}/daily.sh >> /dev/null 2>&1"
-  hour '0'
-  minute '15'
-  user librenms_username
-  only_if { node.normal['librenms']['cron']['daily'] = 'true' }
-end
-
-cron 'alerts' do
-  command "#{librenms_homedir}/alerts.php >> /dev/null 2>&1"
-  hour '*'
-  minute '*'
-  user librenms_username
-  only_if { node.normal['librenms']['cron']['alerts'] = 'true' }
-end
-
-cron 'poll billing' do
-  command "#{librenms_homedir}/poll-billing.php >> /dev/null 2>&1"
-  hour '*'
-  minute '*/5'
-  user librenms_username
-  only_if { node.normal['librenms']['cron']['poll-billing'] = 'true' }
-end
-
-cron 'billing calculate' do
-  command "#{librenms_homedir}/billing-calculate.php >> /dev/null 2>&1"
-  hour '*'
-  minute '01'
-  user librenms_username
-  only_if { node.normal['librenms']['cron']['billing-calculate'] = 'true' }
-end
-
-cron 'check services' do
-  command "#{librenms_homedir}/check-services.php >> /dev/null 2>&1"
-  hour '*'
-  minute '*/5'
-  user librenms_username
-  only_if { node.normal['librenms']['cron']['check'] = true }
-end
-
 template rrdcached_config.to_s do
   source 'rrdcached.erb'
   owner 'root'
@@ -340,3 +275,5 @@ execute 'adduser admin' do
   user 'root'
   group 'root'
 end
+
+include_recipe 'librenms::cron'
