@@ -19,5 +19,5 @@ env:
   - secure: gH/Lh37ng4sYPNToRQIeeILNvmzCYt9pVQxa5ScYcXinSYC3nNFz10Vetv5SmRlHL2Efe9RBhCtW1EEUxIzbd9EfteoJNbdum9xGE0Y9638AdR2rB8IDtxeRrRtelt0PvD69FGIoQ8565ncrL/pqLX68faR2Iha1jghCGPy3zsdurnt0l0fjBNM6Pu7St7hTmsxuxkM/WtkKDqoPT7QQDtXDBHNWtx5ryNn6Lt56kDxoR02zHyP/6ZncvRcdTbSXVpid1N0suD7vwHGMBkDxq+mWJ0eFSUmRqdBlp2SDjoDU3bWaVb5lgkm6T3vv8v8U6Y+z/kU7yC7yoqcbdY0MCar5m/+ipT+mmo6r2epKxxQcnWrmkoASQ08DjczsT5aY2yv028buLPxhjmx+PvjMsZHi2rbh4do/lYYnQoMt7+aUaWxs5k3J+08fC+IplNnL50N1z2gFmKpx0Egg5skrKjGXZys9QSgK/FMmj7KusIaPutbmyAIvfivmGMm2SHK1R8mnuN132cAaFioJUIN1SmAIha9sGLJVFH8ptsFcBinHwD9T2v6WqUQKRUC0whnimkkrfQmSjK4Mv9GCqckoFg2bM+akws3PG4M5WKX3A7vAEZb7YteVPVoNwNyhcAUOsbA8GN8S4Rni45M4KvGcDjdvh/JW/pvj7FowuohH39U=
 before_install:
 - openssl aes-256-cbc -K $encrypted_f47b5fee00aa_key -iv $encrypted_f47b5fee00aa_iv
-  -in ~\/git/librenms/.travis/travis-ci.pem.enc -out ~\/git/librenms/.travis/travis-ci.pem
+  -in .travis/travis-ci.pem.enc -out .travis/travis-ci.pem
   -d
