@@ -13,7 +13,14 @@ bin/*
 .bundle/*
 
 .kitchen/
-.kitchen*
+.kitchen.local.yml
 
 .cookbook_version
+.gitignore
+.RETRYABLE_KITCHEN_TASK
 .env
+.kitchen.ec2.yml
+.kitchen.yml
+bundler/
+cache/
+
