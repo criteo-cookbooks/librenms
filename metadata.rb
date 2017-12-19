@@ -12,3 +12,4 @@ issues_url 'https://github.com/criteo-cookbooks/librenms/issues' if respond_to?(
 
 depends	'apache2'
 depends	'logrotate'
+chef_version '>= 12.5' if respond_to?(:chef_version)
