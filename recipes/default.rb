@@ -89,16 +89,14 @@ when 'rhel'
     description node['librenms']['repo_webtatic']['desc']
     baseurl node['librenms']['repo_webtatic']['url']
     gpgcheck false
-    enabled true
-    only_if { node['librenms']['repo_webtatic']['enabled'] }
+    enabled node['librenms']['repo_webtatic']['enabled']
   end
 
   yum_repository 'epel' do
     description node['librenms']['repo_epel']['desc']
     baseurl node['librenms']['repo_epel']['url']
     gpgcheck false
-    enabled true
-    only_if { node['librenms']['repo_epel']['enabled'] }
+    enabled node['librenms']['repo_epel']['enabled']
   end
 
   package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common
