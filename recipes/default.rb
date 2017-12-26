@@ -14,8 +14,8 @@ librenms_logdir = File.join(librenms_homedir, '/logs')
 librenms_username = node['librenms']['user']
 librenms_group = node['librenms']['group']
 librenms_version = node['librenms']['install']['version']
-librenms_file = File.join(librenms_version, '.zip')
-librenms_archive = File.join(tmpdir, librenms_version)
+librenms_file = ::File.join(librenms_version, '.zip')
+librenms_archive = ::File.join(tmpdir, librenms_version)
 librenms_phpconfigfile = ::File.join(librenms_homedir, 'config.php')
 
 case node['platform_family']
