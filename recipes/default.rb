@@ -65,6 +65,9 @@ when 'rhel'
   librenms_phpconf = '/etc/php.d/librenms.ini'
   rrdcached_config = '/etc/sysconfig/rrdcached'
 
+  include_recipe 'yum-epel'
+  node.default['yum']['epel']['enabled'] = true
+
   package %w[mariadb mariadb-server]
 
   service 'mariadb' do
@@ -90,13 +93,6 @@ when 'rhel'
     baseurl node['librenms']['repo_webtatic']['url']
     gpgcheck false
     enabled node['librenms']['repo_webtatic']['enabled']
-  end
-
-  yum_repository 'epel' do
-    description node['librenms']['repo_epel']['desc']
-    baseurl node['librenms']['repo_epel']['url']
-    gpgcheck false
-    enabled node['librenms']['repo_epel']['enabled']
   end
 
   package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common

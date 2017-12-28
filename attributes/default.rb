@@ -23,13 +23,10 @@ default['librenms']['contact'] = 'webmaster@example.com'
 default['librenms']['user_admin'] = 'admin'
 default['librenms']['user_pass'] = 'admin'
 
-# additional repos
+# additional repo
 default['librenms']['repo_webtatic']['enabled'] = true
 default['librenms']['repo_webtatic']['url'] = 'https://repo.webtatic.com/yum/el7/$basearch/'
 default['librenms']['repo_webtatic']['desc'] = 'Webtatic repo EL7'
-default['librenms']['repo_epel']['enabled'] = true
-default['librenms']['repo_epel']['url'] = 'http://download.fedoraproject.org/pub/epel/7/$basearch'
-default['librenms']['repo_epel']['desc'] = 'EPEL repo EL7'
 
 # downloading librenms
 default['librenms']['install']['url'] = 'https://github.com/librenms/librenms/archive/'
