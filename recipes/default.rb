@@ -90,7 +90,8 @@ when 'rhel'
   yum_repository 'webtatic' do
     description node['librenms']['repo_webtatic']['desc']
     baseurl node['librenms']['repo_webtatic']['url']
-    gpgcheck false
+    gpgcheck true
+    gpgkey node['librenms']['repo_webtatic']['gpgkey']
     enabled node['librenms']['repo_webtatic']['enabled']
   end
 
