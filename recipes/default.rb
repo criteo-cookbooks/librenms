@@ -95,9 +95,10 @@ when 'rhel'
     enabled node['librenms']['repo_webtatic']['enabled']
   end
 
-  package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common
+  package %w[php71w php71w-cli php71w-common php71w-curl php71w-gd php71w-mcrypt 
+             php71w-mysql php71w-process php71w-snmp php71w-xml php71w-zip
              net-snmp ImageMagick jwhois nmap mtr rrdtool MySQL-python net-snmp-utils
-             cronie php70w-mcrypt fping git unzip] do
+             cronie fping git unzip] do
     action :install
   end
 
@@ -121,7 +122,7 @@ user librenms_username do
 end
 
 remote_file "#{librenms_archive}.zip" do
-  source "#{node['librenms']['install']['url']}/#{librenms_file}"
+  source "#{node['librenms']['install']['url']}/#{librenms_version}.zip"
   owner librenms_username
   group librenms_group
   mode '0755'
