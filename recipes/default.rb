@@ -14,8 +14,9 @@ librenms_logdir = File.join(librenms_homedir, '/logs')
 librenms_username = node['librenms']['user']
 librenms_group = node['librenms']['group']
 librenms_version = node['librenms']['install']['version']
-librenms_file = File.join(librenms_version, '.zip')
-librenms_archive = File.join(tmpdir, librenms_version)
+librenms_file = ::File.join(librenms_version, '.zip')
+librenms_archive = ::File.join(tmpdir, librenms_version)
+librenms_phpconfigfile = ::File.join(librenms_homedir, 'config.php')
 
 case node['platform_family']
 when 'debian'
@@ -64,6 +65,8 @@ when 'rhel'
   librenms_phpconf = '/etc/php.d/librenms.ini'
   rrdcached_config = '/etc/sysconfig/rrdcached'
 
+  include_recipe 'yum-epel'
+
   package %w[mariadb mariadb-server]
 
   service 'mariadb' do
@@ -85,19 +88,11 @@ when 'rhel'
   end
 
   yum_repository 'webtatic' do
-    description (node['librenms']['repo_webtatic']['desc']).to_s
-    baseurl (node['librenms']['repo_webtatic']['url']).to_s
-    gpgcheck false
-    enabled true
-    only_if { node.normal['librenms']['repo_webtatic']['enabled'] = 'true' }
-  end
-
-  yum_repository 'epel' do
-    description (node['librenms']['repo_epel']['desc']).to_s
-    baseurl (node['librenms']['repo_epel']['url']).to_s
-    gpgcheck false
-    enabled true
-    only_if { node.normal['librenms']['repo_epel']['enabled'] = 'true' }
+    description node['librenms']['repo_webtatic']['desc']
+    baseurl node['librenms']['repo_webtatic']['url']
+    gpgcheck true
+    gpgkey node['librenms']['repo_webtatic']['gpgkey']
+    enabled node['librenms']['repo_webtatic']['enabled']
   end
 
   package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common
@@ -155,7 +150,7 @@ directory "#{librenms_homedir}/rrd" do
   action :create
 end
 
-template librenms_phpconf.to_s do
+template librenms_phpconf do
   source 'librenms.ini.erb'
   owner 'root'
   group 'root'
@@ -216,42 +211,42 @@ remote_file '/usr/bin/distro' do
 end
 
 web_app 'librenms' do
-  server_port (node['librenms']['web']['port']).to_s
-  server_name node['hostname'].to_s
-  server_alias (node['librenms']['web']['name']).to_s
+  server_port node['librenms']['web']['port']
+  server_name node['hostname']
+  server_alias node['librenms']['web']['name']
   docroot "#{librenms_homedir}/html"
-  directory_options (node['librenms']['web']['options']).to_s
-  allow_override (node['librenms']['web']['override']).to_s
+  directory_options node['librenms']['web']['options']
+  allow_override node['librenms']['web']['override']
 end
 
-template rrdcached_config.to_s do
+template rrdcached_config do
   source 'rrdcached.erb'
   owner 'root'
   group 'root'
   mode '0644'
   variables(
-    options:      (node['librenms']['rrdcached']['options']).to_s,
-    user_options: (node['librenms']['rrdcached']['user_options']).to_s,
+    options:      node['librenms']['rrdcached']['options'],
+    user_options: node['librenms']['rrdcached']['user_options'],
     user:         librenms_username,
     group:        librenms_group,
   )
   notifies :restart, 'service[snmpd]'
-  only_if { node.normal['librenms']['rrdcached']['enabled'] = 'true' }
+  only_if { node['librenms']['rrdcached']['enabled'] }
 end
 
-template "#{librenms_homedir}/config.php" do
+template librenms_phpconfigfile do
   source 'config.php.erb'
   owner librenms_username
   group librenms_group
   mode '0644'
   variables(
-    db_pass:  (node['mariadb']['user_librenms']['password']).to_s,
+    db_pass:  node['mariadb']['user_librenms']['password'],
     user:     librenms_username,
     path:     librenms_homedir,
-    xdp:      (node['librenms']['autodiscover']['xdp']).to_s,
-    ospf:     (node['librenms']['autodiscover']['ospf']).to_s,
-    bgp:      (node['librenms']['autodiscover']['bgp']).to_s,
-    snmpscan: (node['librenms']['autodiscover']['snmpscan']).to_s,
+    xdp:      node['librenms']['autodiscover']['xdp'],
+    ospf:     node['librenms']['autodiscover']['ospf'],
+    bgp:      node['librenms']['autodiscover']['bgp'],
+    snmpscan: node['librenms']['autodiscover']['snmpscan'],
   )
 end
 
