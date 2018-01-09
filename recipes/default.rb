@@ -9,12 +9,12 @@ include_recipe 'logrotate'
 
 tmpdir = node['librenms']['install']['tmpdir']
 librenms_rootdir = node['librenms']['root_dir']
-librenms_homedir = File.join(node['librenms']['root_dir'], '/librenms')
-librenms_logdir = File.join(librenms_homedir, '/logs')
+librenms_homedir = ::File.join(node['librenms']['root_dir'], 'librenms')
+librenms_logdir = ::File.join(librenms_homedir, 'logs')
 librenms_username = node['librenms']['user']
 librenms_group = node['librenms']['group']
 librenms_version = node['librenms']['install']['version']
-librenms_file = ::File.join(librenms_version, '.zip')
+librenms_file = "#{librenms_version}.zip"
 librenms_archive = ::File.join(tmpdir, librenms_version)
 librenms_phpconfigfile = ::File.join(librenms_homedir, 'config.php')
 
@@ -126,6 +126,7 @@ remote_file "#{librenms_archive}.zip" do
   group librenms_group
   mode '0755'
   not_if { ::File.exist? librenms_archive }
+  checksum node['librenms']['install']['checksum'] unless node['librenms']['install']['checksum'].nil?
 end
 
 execute 'extract librenms archive' do
