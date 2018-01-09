@@ -4,7 +4,7 @@ maintainer_email 'use_github_issues@criteo.com'
 license 'All rights reserved'
 description 'Installs/Configures librenms'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version '0.2.5'
+version '0.2.6'
 supports 'centos7'
 
 source_url 'https://github.com/criteo-cookbooks/librenms' if respond_to?(:source_url)
