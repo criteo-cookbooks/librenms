@@ -34,6 +34,9 @@ default['yum']['epel']['enabled'] = true
 default['librenms']['install']['url'] = 'https://github.com/librenms/librenms/archive/'
 default['librenms']['install']['version'] = 'master'
 default['librenms']['install']['tmpdir'] = '/var/tmp/'
+# override this with the proper archive checksum if you install a
+# specific version and care about checksums.
+default['librenms']['install']['checksum'] = nil
 
 # cron jobs mgmt
 default['librenms']['config']['poller_threads'] = '8'
