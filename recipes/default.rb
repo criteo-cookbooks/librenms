@@ -203,12 +203,12 @@ template '/etc/snmp/snmpd.conf' do
   notifies :restart, 'service[snmpd]'
 end
 
-remote_file '/usr/bin/distro' do
-  source node['librenms']['snmp']['distro']
+cookbook_file 'distro' do
+  path '/usr/bin/distro'
   owner 'root'
   group 'root'
   mode '0755'
-  notifies :restart, 'service[snmpd]'
+  notifies :restart, 'service[snmpd]', :delayed
 end
 
 web_app 'librenms' do

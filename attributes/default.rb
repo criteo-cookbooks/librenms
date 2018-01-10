@@ -16,7 +16,6 @@ default['librenms']['phpini']['timezone'] = 'UTC'
 
 # snmpd
 default['librenms']['snmp']['community'] = 'public'
-default['librenms']['snmp']['distro'] = 'https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/distro'
 default['librenms']['contact'] = 'webmaster@example.com'
 
 # librenms user mgmt
