@@ -203,14 +203,6 @@ template '/etc/snmp/snmpd.conf' do
   notifies :restart, 'service[snmpd]'
 end
 
-remote_file '/usr/bin/distro' do
-  source node['librenms']['snmp']['distro']
-  owner 'root'
-  group 'root'
-  mode '0755'
-  notifies :restart, 'service[snmpd]'
-end
-
 web_app 'librenms' do
   server_port node['librenms']['web']['port']
   server_name node['hostname']
