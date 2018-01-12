@@ -130,7 +130,7 @@ remote_file "#{librenms_archive}.zip" do
 end
 
 execute 'extract librenms archive' do
-  command "/usr/bin/unzip -o #{librenms_archive} -d #{librenms_rootdir}"
+  command "/usr/bin/unzip -o #{librenms_archive} -d #{librenms_rootdir} && chown -R #{librenms_username}:#{librenms_group} #{librenms_rootdir}"
   user 'root'
   group 'root'
   umask '022'
@@ -203,12 +203,12 @@ template '/etc/snmp/snmpd.conf' do
   notifies :restart, 'service[snmpd]'
 end
 
-remote_file '/usr/bin/distro' do
-  source node['librenms']['snmp']['distro']
+cookbook_file 'distro' do
+  path '/usr/bin/distro'
   owner 'root'
   group 'root'
   mode '0755'
-  notifies :restart, 'service[snmpd]'
+  notifies :restart, 'service[snmpd]', :delayed
 end
 
 web_app 'librenms' do
