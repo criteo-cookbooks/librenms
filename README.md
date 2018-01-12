@@ -1,5 +1,8 @@
 # librenms
 
+[![Cookbook Version][cookbook_version]][cookbook]
+[![Build Status][build_status]][build_status]
+
 [LibreNMS](http://www.librenms.org/)
 Installation and configuration by chef
 
@@ -80,3 +83,8 @@ The release is tested on:
 Author:: criteo (n.grieco@criteo.com)
 
 Copyright:: 2017, criteo
+
+
+[build_status]:             https://api.travis-ci.org/criteo-cookbooks/librenms.svg?branch=master
+[cookbook_version]:         https://img.shields.io/cookbook/v/librenms.svg
+[cookbook]:                 https://supermarket.chef.io/cookbooks/librenms
