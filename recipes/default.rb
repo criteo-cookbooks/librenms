@@ -244,6 +244,7 @@ template librenms_phpconfigfile do
     db_pass:  node['mariadb']['user_librenms']['password'],
     user:     librenms_username,
     path:     librenms_homedir,
+    auto_up:  node['librenms']['auto_update']['enabled'],
     xdp:      node['librenms']['autodiscover']['xdp'],
     ospf:     node['librenms']['autodiscover']['ospf'],
     bgp:      node['librenms']['autodiscover']['bgp'],
