@@ -1,5 +1,6 @@
 
 default['mariadb']['user_librenms']['password'] = 'default'
+default['mariadb']['bind_address'] = '127.0.0.1'
 
 default['librenms']['root_dir'] = '/var/opt/'
 default['librenms']['path'] = "node['librenms']['root_dir']/librenms"
