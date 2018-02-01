@@ -45,6 +45,7 @@ when 'debian'
     owner 'root'
     group 'root'
     mode '0644'
+    variables(bind_address: node['mariadb']['bind_address'])
     notifies :restart, 'service[mysql]'
   end
 
@@ -84,6 +85,7 @@ when 'rhel'
     owner 'root'
     group 'root'
     mode '0644'
+    variables(bind_address: node['mariadb']['bind_address'])
     notifies :restart, 'service[mariadb]'
   end
 
