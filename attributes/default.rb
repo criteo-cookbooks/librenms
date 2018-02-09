@@ -39,6 +39,9 @@ default['librenms']['install']['tmpdir'] = '/var/tmp/'
 # specific version and care about checksums.
 default['librenms']['install']['checksum'] = nil
 
+# auto_update - enabled by default (numerical boolean)
+default['librenms']['auto_update_enabled'] = 1
+
 # cron jobs mgmt
 default['librenms']['config']['poller_threads'] = '8'
 default['librenms']['cron']['discovery_all']['enabled'] = true

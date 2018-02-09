@@ -35,9 +35,7 @@ $config['snmp']['community'] = array("public");
 ### Authentication Model
 $config['auth_mechanism'] = "mysql"; # default, other options: ldap, http-auth
 
-
-# Uncomment the next line to disable daily updates
-#$config['update'] = 0;
+$config['update'] = <%= @auto_up %>;
 
 $config['fping'] = "/usr/sbin/fping";
 $config['autodiscovery']['xdp'] = <%= @xdp %>;
