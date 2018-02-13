@@ -132,7 +132,7 @@ remote_file "#{librenms_archive}.zip" do
 end
 
 execute 'extract librenms archive' do
-  command "/usr/bin/unzip -o #{librenms_archive} -d #{librenms_rootdir}"
+  command "/usr/bin/unzip -o #{librenms_archive} -d #{librenms_rootdir} && chown -R #{librenms_username}:#{librenms_group} #{librenms_rootdir}"
   user 'root'
   group 'root'
   umask '022'
