@@ -1,5 +1,6 @@
 
 default['mariadb']['user_librenms']['password'] = 'default'
+default['mariadb']['bind_address'] = '127.0.0.1'
 
 default['librenms']['root_dir'] = '/var/opt/'
 default['librenms']['path'] = "node['librenms']['root_dir']/librenms"
@@ -37,6 +38,9 @@ default['librenms']['install']['tmpdir'] = '/var/tmp/'
 # override this with the proper archive checksum if you install a
 # specific version and care about checksums.
 default['librenms']['install']['checksum'] = nil
+
+# auto_update - enabled by default (numerical boolean)
+default['librenms']['auto_update_enabled'] = 1
 
 # cron jobs mgmt
 default['librenms']['config']['poller_threads'] = '8'
