@@ -9,6 +9,7 @@ Installation and configuration by chef
 ## Cookbooks dependencies
 * apache2
 * logrotate
+* yum-epel
 
 ## Platforms
 The release is tested on:
@@ -68,11 +69,12 @@ The release is tested on:
 - rrdcached support
 - cron management
 - additional repositories (optional: EPEL, webtatic)
+- AD authentication (see [LibreNMS doc pages](https://docs.librenms.org/#Extensions/Authentication/#active-directory-authentication) for details)
 
 
 ### TODO
 - nginx support
-- External auth (LDAP, AD, Radius, etc.)
+- More external auth (LDAP, Radius, etc.)
 - SElinux support
 - Performance optimisations from LibreNMS doc
 - Worldmap support

@@ -243,14 +243,26 @@ template librenms_phpconfigfile do
   group librenms_group
   mode '0644'
   variables(
-    db_pass:  node['mariadb']['user_librenms']['password'],
-    user:     librenms_username,
-    path:     librenms_homedir,
-    auto_up:  node['librenms']['auto_update_enabled'],
-    xdp:      node['librenms']['autodiscover']['xdp'],
-    ospf:     node['librenms']['autodiscover']['ospf'],
-    bgp:      node['librenms']['autodiscover']['bgp'],
-    snmpscan: node['librenms']['autodiscover']['snmpscan'],
+    db_pass:    node['mariadb']['user_librenms']['password'],
+    user:       librenms_username,
+    path:       librenms_homedir,
+    xdp:        node['librenms']['autodiscover']['xdp'],
+    ospf:       node['librenms']['autodiscover']['ospf'],
+    bgp:        node['librenms']['autodiscover']['bgp'],
+    snmpscan:   node['librenms']['autodiscover']['snmpscan'],
+    ad_enabled: node['librenms']['auth_ad']['enabled'],
+    ad_url:     node['librenms']['auth_ad']['url'],
+    ad_domain:  node['librenms']['auth_ad']['domain'],
+    ad_dn:      node['librenms']['auth_ad']['base_dn'],
+    ad_check:   node['librenms']['auth_ad']['check_cert'],
+    ad_user:    node['librenms']['auth_ad']['binduser'],
+    ad_pass:    node['librenms']['auth_ad']['bindpassword'],
+    ad_timeout: node['librenms']['auth_ad']['timeout'],
+    ad_debug:   node['librenms']['auth_ad']['debug_enabled'],
+    ad_purge:   node['librenms']['auth_ad']['users_purge'],
+    ad_req:     node['librenms']['auth_ad']['req_member'],
+    ad_admlvl:  node['librenms']['auth_ad']['admingroup_level'],
+    ad_usrlvl:  node['librenms']['auth_ad']['usergroup_level'],
   )
 end
 
