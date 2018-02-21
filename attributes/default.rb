@@ -42,6 +42,10 @@ default['librenms']['install']['checksum'] = nil
 # auto_update - enabled by default (numerical boolean)
 default['librenms']['auto_update_enabled'] = 1
 
+# optional additional config file to include in config.php
+default['librenms']['add_config_file']['enabled'] = false
+default['librenms']['add_config_file']['path'] = ''
+
 # cron jobs mgmt
 default['librenms']['config']['poller_threads'] = '8'
 default['librenms']['cron']['discovery_all']['enabled'] = true
