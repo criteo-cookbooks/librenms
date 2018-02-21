@@ -30,6 +30,11 @@ when 'debian'
     action :install
   end
 
+  package 'php7.0-ldap' do
+    action :install
+    only_if { node['librenms']['auth_ad']['enabled'] }
+  end
+
   service 'mysql' do
     supports status: true, restart: true, reload: true
     action :start
@@ -101,6 +106,11 @@ when 'rhel'
              net-snmp ImageMagick jwhois nmap mtr rrdtool MySQL-python net-snmp-utils
              cronie php70w-mcrypt fping git unzip] do
     action :install
+  end
+
+  package 'php70w-ldap' do
+    action :install
+    only_if { node['librenms']['auth_ad']['enabled'] }
   end
 
   apache_module 'php7' do
