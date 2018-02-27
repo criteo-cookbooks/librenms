@@ -156,6 +156,13 @@ execute 'create symlink' do
   not_if { ::File.exist? librenms_homedir }
 end
 
+execute 'find and chown' do
+  command "find #{librenms_homedir} ! -user #{librenms_username} -exec chown #{librenms_username}:#{librenms_group} {} \;"
+  user 'root'
+  group 'root'
+  not_if "find #{librenms_homedir} ! -user #{librenms_username} | grep #{librenms_homedir}"
+end
+
 directory "#{librenms_homedir}/rrd" do
   owner librenms_username
   group librenms_group
