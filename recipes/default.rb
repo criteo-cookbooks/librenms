@@ -146,28 +146,16 @@ user librenms_username do
   manage_home false
 end
 
-remote_file "#{librenms_archive}.zip" do
-  source "#{node['librenms']['install']['url']}/#{librenms_file}"
+ark 'librenms' do
+  url "#{node['librenms']['install']['url']}/#{librenms_file}"
+  path librenms_rootdir
+  home_dir librenms_homedir
+  mode '0755'
+  checksum node['librenms']['install']['checksum'] unless node['librenms']['install']['checksum'].nil?
+  version librenms_version
   owner librenms_username
   group librenms_group
-  mode '0755'
-  not_if { ::File.exist? librenms_archive }
-  checksum node['librenms']['install']['checksum'] unless node['librenms']['install']['checksum'].nil?
-end
-
-execute 'extract librenms archive' do
-  command "/usr/bin/unzip -o #{librenms_archive} -d #{librenms_rootdir}"
-  user 'root'
-  group 'root'
-  umask '022'
-  not_if { ::File.exist? File.join(librenms_homedir, 'README.md') }
-end
-
-execute 'create symlink' do
-  command "ln -s #{node['librenms']['root_dir']}/librenms-#{librenms_version} #{librenms_homedir}"
-  user 'root'
-  group 'root'
-  not_if { ::File.exist? librenms_homedir }
+  action :install
 end
 
 execute 'find and chown' do
