@@ -25,9 +25,9 @@ $config['install_dir']  = "<%= @path %>";
 ### It will prevent the web interface being usable form any other hostname
 #$config['base_url']        = "http://";
 
-### Enable this to use rrdcached. Be sure rrd_dir is within the rrdcached dir
-### and that your web server has permission to talk to rrdcached.
-#$config['rrdcached']    = "unix:/var/run/rrdcached.sock";
+<% if @rrdcached_enabled == true %>
+  $config['rrdcached']    = "unix:/var/run/rrdcached.sock";
+<% end %>
 
 ### Default community
 $config['snmp']['community'] = array("public");

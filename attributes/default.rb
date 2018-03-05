@@ -28,6 +28,10 @@ default['librenms']['repo_webtatic']['enabled'] = true
 default['librenms']['repo_webtatic']['url'] = 'https://repo.webtatic.com/yum/el7/$basearch/'
 default['librenms']['repo_webtatic']['desc'] = 'Webtatic repo EL7'
 default['librenms']['repo_webtatic']['gpgkey'] = 'https://repo.webtatic.com/yum/RPM-GPG-KEY-webtatic-el7'
+default['librenms']['repo_opennms']['enabled'] = true
+default['librenms']['repo_opennms']['url'] = 'http://yum.opennms.org/stable/rhel7'
+default['librenms']['repo_opennms']['desc'] = 'OpenNMS repo EL7'
+default['librenms']['repo_opennms']['gpgkey'] = 'https://yum.opennms.org/OPENNMS-GPG-KEY'
 default['yum']['epel']['enabled'] = true
 
 # downloading librenms
