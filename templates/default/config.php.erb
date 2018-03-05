@@ -47,3 +47,7 @@ $config['rrdtool_version'] = '1.5.5';
 
 $config['geoloc']['latlng'] = true;
 $config['geoloc']['engine'] = "google"; //Only one available at present
+
+if(file_exists( __DIR__  . '/config.custom.php')) {
+    include  __DIR__  . '/config.custom.php';
+}
