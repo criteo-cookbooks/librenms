@@ -265,15 +265,17 @@ template librenms_phpconfigfile do
   group librenms_group
   mode '0644'
   variables(
-    db_pass:      node['mariadb']['user_librenms']['password'],
-    user:         librenms_username,
-    path:         librenms_homedir,
-    rrdc_enabled: node['librenms']['rrdcached']['enabled'],
-    auto_up:      node['librenms']['auto_update_enabled'],
-    xdp:          node['librenms']['autodiscover']['xdp'],
-    ospf:         node['librenms']['autodiscover']['ospf'],
-    bgp:          node['librenms']['autodiscover']['bgp'],
-    snmpscan:     node['librenms']['autodiscover']['snmpscan'],
+    db_pass:          node['mariadb']['user_librenms']['password'],
+    user:             librenms_username,
+    path:             librenms_homedir,
+    rrdc_enabled:     node['librenms']['rrdcached']['enabled'],
+    auto_up:          node['librenms']['auto_update_enabled'],
+    xdp:              node['librenms']['autodiscover']['xdp'],
+    ospf:             node['librenms']['autodiscover']['ospf'],
+    bgp:              node['librenms']['autodiscover']['bgp'],
+    snmpscan:         node['librenms']['autodiscover']['snmpscan'],
+    add_conf_enabled: node['librenms']['add_config_file']['enabled'],
+    add_conf_file:    node['librenms']['add_config_file']['path'],
   )
 end
 
