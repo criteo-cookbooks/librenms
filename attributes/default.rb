@@ -89,3 +89,18 @@ default['librenms']['autodiscover']['ospf'] = false
 default['librenms']['autodiscover']['bgp'] = false
 default['librenms']['autodiscover']['snmpscan'] = false
 default['librenms']['network_discovery'] = ['10.0.0.0/8', '192.168.0.0/16']
+
+# AD auth
+default['librenms']['auth_ad']['enabled'] = false
+default['librenms']['auth_ad']['url'] = 'ldaps://<your-domain.controll.er>'
+default['librenms']['auth_ad']['domain'] = '<your-domain.com>'
+default['librenms']['auth_ad']['base_dn'] = '<dc=your-domain,dc=com>'
+default['librenms']['auth_ad']['check_cert'] = 'true'
+default['librenms']['auth_ad']['binduser'] = 'examplebinduser'
+default['librenms']['auth_ad']['bindpassword'] = 'examplepassword'
+default['librenms']['auth_ad']['timeout'] = '5'
+default['librenms']['auth_ad']['debug_enabled'] = 'false'
+default['librenms']['auth_ad']['users_purge'] = '30'
+default['librenms']['auth_ad']['req_member'] = 'false'
+default['librenms']['auth_ad']['admingroup_level'] = '10'
+default['librenms']['auth_ad']['usergroup_level'] = '5'

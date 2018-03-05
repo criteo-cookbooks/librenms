@@ -30,6 +30,11 @@ when 'debian'
     action :install
   end
 
+  package 'php7.0-ldap' do
+    action :install
+    only_if { node['librenms']['auth_ad']['enabled'] }
+  end
+    
   package rrdcached do
     action :install
     only_if { node['librenms']['rrdcached']['enabled'] }
@@ -115,6 +120,11 @@ when 'rhel'
              net-snmp ImageMagick jwhois nmap mtr rrdtool MySQL-python net-snmp-utils
              cronie php70w-mcrypt fping git unzip] do
     action :install
+  end
+
+  package 'php70w-ldap' do
+    action :install
+    only_if { node['librenms']['auth_ad']['enabled'] }
   end
 
   apache_module 'php7' do
@@ -274,6 +284,19 @@ template librenms_phpconfigfile do
     ospf:             node['librenms']['autodiscover']['ospf'],
     bgp:              node['librenms']['autodiscover']['bgp'],
     snmpscan:         node['librenms']['autodiscover']['snmpscan'],
+    ad_enabled:       node['librenms']['auth_ad']['enabled'],
+    ad_url:           node['librenms']['auth_ad']['url'],
+    ad_domain:        node['librenms']['auth_ad']['domain'],
+    ad_dn:            node['librenms']['auth_ad']['base_dn'],
+    ad_check:         node['librenms']['auth_ad']['check_cert'],
+    ad_user:          node['librenms']['auth_ad']['binduser'],
+    ad_pass:          node['librenms']['auth_ad']['bindpassword'],
+    ad_timeout:       node['librenms']['auth_ad']['timeout'],
+    ad_debug:         node['librenms']['auth_ad']['debug_enabled'],
+    ad_purge:         node['librenms']['auth_ad']['users_purge'],
+    ad_req:           node['librenms']['auth_ad']['req_member'],
+    ad_admlvl:        node['librenms']['auth_ad']['admingroup_level'],
+    ad_usrlvl:        node['librenms']['auth_ad']['usergroup_level'],
     add_conf_enabled: node['librenms']['add_config_file']['enabled'],
     add_conf_file:    node['librenms']['add_config_file']['path'],
   )

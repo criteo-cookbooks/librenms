@@ -48,6 +48,22 @@ $config['rrdtool_version'] = '1.5.5';
 $config['geoloc']['latlng'] = true;
 $config['geoloc']['engine'] = "google"; //Only one available at present
 
+<% if @ad_enabled == true %>
+ $config['auth_mechanism']                  = "active_directory";
+ $config['auth_ad_url']                     = "<%= @ad_url %>";
+ $config['auth_ad_domain']                  = "<%= @ad_domain %>";
+ $config['auth_ad_base_dn']                 = "<%= @ad_dn %>";
+ $config['auth_ad_check_certificates']      = <%= @ad_check %>;
+ $config['auth_ad_binduser']                = '<%= @ad_user %>';
+ $config['auth_ad_bindpassword']            = '<%= @ad_pass %>';
+ $config['auth_ad_timeout']                 = <%= @ad_timeout %>;
+ $config['auth_ad_debug']                   = <%= @ad_debug %>;
+ $config['active_directory']['users_purge'] = <%= @ad_purge %>;
+ $config['auth_ad_require_groupmembership'] = <%= @ad_req %>;
+ $config['auth_ad_groups']['<ad-admingroup>']['level'] = <%= @ad_admlvl %>;
+ $config['auth_ad_groups']['<ad-usergroup>']['level']  = <%= @ad_usrlvl %>;
+<% end %>
+
 <% if @add_conf_enabled == true %>
   if(file_exists( __DIR__ . '<%= @add_conf_file_path %>')) {
     include "<%= @add_conf_file_path %>"
