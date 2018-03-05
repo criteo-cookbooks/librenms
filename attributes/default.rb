@@ -2,9 +2,9 @@
 default['mariadb']['user_librenms']['password'] = 'default'
 default['mariadb']['bind_address'] = '127.0.0.1'
 
-default['librenms']['root_dir'] = '/var/opt/'
-default['librenms']['path'] = "node['librenms']['root_dir']/librenms"
-default['librenms']['rrd_dir'] = "node['librenms']['path']/rrd"
+default['librenms']['root_dir'] = '/var/opt'
+default['librenms']['path'] = ::File.join(node['librenms']['root_dir'], 'librenms')
+default['librenms']['rrd_dir'] = ::File.join(node['librenms']['path'], 'rrd')
 default['librenms']['user']  = 'librenms'
 default['librenms']['group'] = 'librenms'
 
@@ -39,7 +39,6 @@ default['yum']['epel']['enabled'] = true
 default['librenms']['install']['url'] = 'https://github.com/librenms/librenms/archive/'
 default['librenms']['install']['version'] = '1.35'
 default['librenms']['install']['checksum'] = '72019d9b58b145b617b1e9bfe7f39bd01c9fe5c254e561ef0c80b0a3eb56ac3f'
-default['librenms']['install']['tmpdir'] = '/var/tmp/'
 # override this with the proper archive checksum if you install a
 # specific version and care about checksums.
 default['librenms']['install']['checksum'] = nil
@@ -48,7 +47,6 @@ default['librenms']['install']['checksum'] = nil
 default['librenms']['auto_update_enabled'] = 1
 
 # optional additional config file to include in config.php
-default['librenms']['add_config_file']['enabled'] = false
 default['librenms']['add_config_file']['path'] = ''
 
 # cron jobs mgmt
@@ -82,7 +80,6 @@ default['librenms']['cron']['check']['minute'] = '*/5'
 default['librenms']['rrdcached']['enabled'] = false
 default['librenms']['rrdcached']['config_file'] = '/etc/sysconfig/rrdcached'
 default['librenms']['rrdcached']['options'] = '-w 1800 -z 1800 -f 3600 -B -R -j /var/tmp -l unix:/var/run/rrdcached/rrdcached.sock -t 4 -F'
-default['librenms']['rrdcached']['path'] = "node['librenms']['path']/rrd"
 
 # autodiscover switches
 default['librenms']['autodiscover']['xdp'] = false

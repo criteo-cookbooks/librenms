@@ -7,7 +7,6 @@
 include_recipe 'apache2'
 include_recipe 'logrotate'
 
-tmpdir = node['librenms']['install']['tmpdir']
 librenms_rootdir = node['librenms']['root_dir']
 librenms_homedir = ::File.join(node['librenms']['root_dir'], 'librenms')
 librenms_logdir = ::File.join(librenms_homedir, 'logs')
@@ -16,7 +15,6 @@ librenms_username = node['librenms']['user']
 librenms_group = node['librenms']['group']
 librenms_version = node['librenms']['install']['version']
 librenms_file = "#{librenms_version}.zip"
-librenms_archive = ::File.join(tmpdir, librenms_version)
 librenms_phpconfigfile = ::File.join(librenms_homedir, 'config.php')
 
 case node['platform_family']
@@ -35,9 +33,25 @@ when 'debian'
     action :install
     only_if { node['librenms']['auth_ad']['enabled'] }
   end
-    
+
   package rrdcached do
     action :install
+    only_if { node['librenms']['rrdcached']['enabled'] }
+  end
+
+  template rrdcached_config do
+    source 'rrdcached.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
+    variables(
+      options:      node['librenms']['rrdcached']['options'],
+      user_options: node['librenms']['rrdcached']['user_options'],
+      user:         librenms_username,
+      group:        librenms_group,
+      dir:          librenms_rrddir,
+    )
+    notifies :restart, 'service[rrdcached]'
     only_if { node['librenms']['rrdcached']['enabled'] }
   end
 
@@ -75,7 +89,6 @@ when 'debian'
 when 'rhel'
 
   librenms_phpconf = '/etc/php.d/librenms.ini'
-  rrdcached_config = '/etc/sysconfig/rrdcached'
 
   include_recipe 'yum-epel'
 
@@ -132,6 +145,27 @@ when 'rhel'
     filename 'libphp7.so'
   end
 
+  systemd_unit 'rrdcached.service' do
+    content <<-FOO.gsub(/^\s+/, '')
+    [Unit]
+    Description=Data caching daemon for rrdtool
+    After=network.service
+
+    [Service]
+    PIDFile=/var/run/rrdcached.pid
+    ExecStart=/usr/sbin/rrdcached #{node['librenms']['rrdcached']['options']} -s #{node['librenms']['user']} -U #{node['librenms']['user']} -G #{node['librenms']['group']} -b #{node['librenms']['root_dir']}/librenms-#{librenms_version}/rrd
+    RemainAfterExit=yes
+    User=root
+    TimeoutStartSec=300
+
+    [Install]
+    WantedBy=default.target
+
+    FOO
+
+    action %i[create enable]
+  end
+
 end
 
 group librenms_group do
@@ -160,10 +194,10 @@ ark 'librenms' do
 end
 
 execute 'find and chown' do
-  command "find #{librenms_homedir} ! -user #{librenms_username} -exec chown #{librenms_username}:#{librenms_group} {} \;"
+  command "find #{librenms_homedir} ! -user #{librenms_username} -exec chown #{librenms_username}:#{librenms_group} {} \\;"
   user 'root'
   group 'root'
-  not_if "find #{librenms_homedir} ! -user #{librenms_username} | grep #{librenms_homedir}"
+  only_if "find -L #{librenms_homedir} ! -user #{librenms_username} | grep #{librenms_homedir}"
 end
 
 directory librenms_rrddir do
@@ -243,53 +277,36 @@ web_app 'librenms' do
   allow_override node['librenms']['web']['override']
 end
 
-template rrdcached_config do
-  source 'rrdcached.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  variables(
-    options:      node['librenms']['rrdcached']['options'],
-    user_options: node['librenms']['rrdcached']['user_options'],
-    user:         librenms_username,
-    group:        librenms_group,
-    dir:          librenms_rrddir,
-  )
-  notifies :restart, 'service[rrdcached]'
-  only_if { node['librenms']['rrdcached']['enabled'] }
-end
-
 template librenms_phpconfigfile do
   source 'config.php.erb'
   owner librenms_username
   group librenms_group
   mode '0644'
   variables(
-    db_pass:          node['mariadb']['user_librenms']['password'],
-    user:             librenms_username,
-    path:             librenms_homedir,
-    rrdc_enabled:     node['librenms']['rrdcached']['enabled'],
-    auto_up:          node['librenms']['auto_update_enabled'],
-    xdp:              node['librenms']['autodiscover']['xdp'],
-    ospf:             node['librenms']['autodiscover']['ospf'],
-    bgp:              node['librenms']['autodiscover']['bgp'],
-    snmpscan:         node['librenms']['autodiscover']['snmpscan'],
-    ad_enabled:       node['librenms']['auth_ad']['enabled'],
-    ad_url:           node['librenms']['auth_ad']['url'],
-    ad_domain:        node['librenms']['auth_ad']['domain'],
-    ad_dn:            node['librenms']['auth_ad']['base_dn'],
-    ad_check:         node['librenms']['auth_ad']['check_cert'],
-    ad_user:          node['librenms']['auth_ad']['binduser'],
-    ad_pass:          node['librenms']['auth_ad']['bindpassword'],
-    ad_timeout:       node['librenms']['auth_ad']['timeout'],
-    ad_debug:         node['librenms']['auth_ad']['debug_enabled'],
-    ad_purge:         node['librenms']['auth_ad']['users_purge'],
-    ad_req:           node['librenms']['auth_ad']['req_member'],
-    ad_admlvl:        node['librenms']['auth_ad']['admingroup_level'],
-    ad_usrlvl:        node['librenms']['auth_ad']['usergroup_level'],
-    add_conf_enabled: node['librenms']['add_config_file']['enabled'],
-    add_conf_file:    node['librenms']['add_config_file']['path'],
-    rrddir:           node['librenms']['rrd_dir'],
+    db_pass:            node['mariadb']['user_librenms']['password'],
+    user:               librenms_username,
+    path:               librenms_homedir,
+    rrdcached_enabled:  node['librenms']['rrdcached']['enabled'],
+    auto_up:            node['librenms']['auto_update_enabled'],
+    xdp:                node['librenms']['autodiscover']['xdp'],
+    ospf:               node['librenms']['autodiscover']['ospf'],
+    bgp:                node['librenms']['autodiscover']['bgp'],
+    snmpscan:           node['librenms']['autodiscover']['snmpscan'],
+    ad_enabled:         node['librenms']['auth_ad']['enabled'],
+    ad_url:             node['librenms']['auth_ad']['url'],
+    ad_domain:          node['librenms']['auth_ad']['domain'],
+    ad_dn:              node['librenms']['auth_ad']['base_dn'],
+    ad_check:           node['librenms']['auth_ad']['check_cert'],
+    ad_user:            node['librenms']['auth_ad']['binduser'],
+    ad_pass:            node['librenms']['auth_ad']['bindpassword'],
+    ad_timeout:         node['librenms']['auth_ad']['timeout'],
+    ad_debug:           node['librenms']['auth_ad']['debug_enabled'],
+    ad_purge:           node['librenms']['auth_ad']['users_purge'],
+    ad_req:             node['librenms']['auth_ad']['req_member'],
+    ad_admlvl:          node['librenms']['auth_ad']['admingroup_level'],
+    ad_usrlvl:          node['librenms']['auth_ad']['usergroup_level'],
+    add_conf_file_path: node['librenms']['add_config_file']['path'],
+    rrddir:             node['librenms']['rrd_dir'],
   )
 end
 
