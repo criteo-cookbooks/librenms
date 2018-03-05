@@ -30,6 +30,11 @@ when 'debian'
     action :install
   end
 
+  package rrdcached do
+    action :install
+    only_if { node['librenms']['rrdcached']['enabled'] }
+  end
+
   service 'mysql' do
     supports status: true, restart: true, reload: true
     action :start
@@ -95,6 +100,15 @@ when 'rhel'
     gpgcheck true
     gpgkey node['librenms']['repo_webtatic']['gpgkey']
     enabled node['librenms']['repo_webtatic']['enabled']
+  end
+
+  yum_repository 'opennms' do
+    description node['librenms']['repo_opennms']['desc']
+    baseurl node['librenms']['repo_opennms']['url']
+    gpgcheck true
+    gpgkey node['librenms']['repo_opennms']['gpgkey']
+    enabled node['librenms']['repo_opennms']['enabled']
+    only_if { node['librenms']['rrdcached']['enabled'] }
   end
 
   package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common
@@ -239,8 +253,9 @@ template rrdcached_config do
     user_options: node['librenms']['rrdcached']['user_options'],
     user:         librenms_username,
     group:        librenms_group,
+    dir:          ::File.join(node['librenms']['root_dir'], "librenms-#{librenms_version}/rrd"),
   )
-  notifies :restart, 'service[snmpd]'
+  notifies :restart, 'service[rrdcached]'
   only_if { node['librenms']['rrdcached']['enabled'] }
 end
 
@@ -250,14 +265,15 @@ template librenms_phpconfigfile do
   group librenms_group
   mode '0644'
   variables(
-    db_pass:  node['mariadb']['user_librenms']['password'],
-    user:     librenms_username,
-    path:     librenms_homedir,
-    auto_up:  node['librenms']['auto_update_enabled'],
-    xdp:      node['librenms']['autodiscover']['xdp'],
-    ospf:     node['librenms']['autodiscover']['ospf'],
-    bgp:      node['librenms']['autodiscover']['bgp'],
-    snmpscan: node['librenms']['autodiscover']['snmpscan'],
+    db_pass:      node['mariadb']['user_librenms']['password'],
+    user:         librenms_username,
+    path:         librenms_homedir,
+    rrdc_enabled: node['librenms']['rrdcached']['enabled'],
+    auto_up:      node['librenms']['auto_update_enabled'],
+    xdp:          node['librenms']['autodiscover']['xdp'],
+    ospf:         node['librenms']['autodiscover']['ospf'],
+    bgp:          node['librenms']['autodiscover']['bgp'],
+    snmpscan:     node['librenms']['autodiscover']['snmpscan'],
   )
 end
 
