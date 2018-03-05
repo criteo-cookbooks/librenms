@@ -63,3 +63,9 @@ $config['geoloc']['engine'] = "google"; //Only one available at present
  $config['auth_ad_groups']['<ad-admingroup>']['level'] = <%= @ad_admlvl %>;
  $config['auth_ad_groups']['<ad-usergroup>']['level']  = <%= @ad_usrlvl %>;
 <% end %>
+
+<% if @add_conf_enabled == true %>
+  if(file_exists( __DIR__ . '<%= @add_conf_file_path %>')) {
+    include "<%= @add_conf_file_path %>"
+}
+<% end $>
