@@ -1,7 +1,7 @@
 name 'librenms'
 maintainer 'Criteo'
 maintainer_email 'use_github_issues@criteo.com'
-license 'All rights reserved'
+license 'Apache License'
 description 'Installs/Configures librenms'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version '0.2.9'
