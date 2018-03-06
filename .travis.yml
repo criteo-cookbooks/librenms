@@ -3,6 +3,9 @@ cache: bundler
 rvm:
 - 2.3.2
 deploy:
+  edge:
+    source: criteo-forks/dpl
+    branch: chef_ruby2
   skip_cleanup: true
   edge: true
   provider: chef-supermarket
