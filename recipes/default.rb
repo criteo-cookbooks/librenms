@@ -155,13 +155,13 @@ when 'rhel'
 
     [Service]
     PIDFile=/var/run/rrdcached.pid
-    ExecStart=/usr/sbin/rrdcached #{node['librenms']['rrdcached']['options']} -s #{node['librenms']['user']} -U #{node['librenms']['user']} -G #{node['librenms']['group']} -b #{node['librenms']['rrd_dir']}
-
-    [Install]
-    WantedBy=default.target
+    ExecStart=/usr/sbin/rrdcached #{node['librenms']['rrdcached']['options']} -s #{node['librenms']['user']} -U #{node['librenms']['user']} -G #{node['librenms']['group']} -b #{node['librenms']['root_dir']}/librenms-#{librenms_version}
     RemainAfterExit=yes
     User=root
     TimeoutStartSec=300
+
+    [Install]
+    WantedBy=default.target
 
     FOO
 
