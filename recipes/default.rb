@@ -11,7 +11,6 @@ tmpdir = node['librenms']['install']['tmpdir']
 librenms_rootdir = node['librenms']['root_dir']
 librenms_homedir = ::File.join(node['librenms']['root_dir'], 'librenms')
 librenms_logdir = ::File.join(librenms_homedir, 'logs')
-librenms_rrddir = node['librenms']['rrd_dir']
 librenms_username = node['librenms']['user']
 librenms_group = node['librenms']['group']
 librenms_version = node['librenms']['install']['version']
@@ -178,12 +177,11 @@ execute 'find and chown' do
   not_if "find #{librenms_homedir} ! -user #{librenms_username} | grep #{librenms_homedir}"
 end
 
-directory librenms_rrddir do
+directory "#{librenms_homedir}/rrd" do
   owner librenms_username
   group librenms_group
   mode '0755'
   action :create
-  not_if { ::File.exist? librenms_rrddir }
 end
 
 template librenms_phpconf do
@@ -265,7 +263,7 @@ template rrdcached_config do
     user_options: node['librenms']['rrdcached']['user_options'],
     user:         librenms_username,
     group:        librenms_group,
-    dir:          librenms_rrddir,
+    dir:          ::File.join(node['librenms']['root_dir'], "librenms-#{librenms_version}/rrd"),
   )
   notifies :restart, 'service[rrdcached]'
   only_if { node['librenms']['rrdcached']['enabled'] }
@@ -301,7 +299,6 @@ template librenms_phpconfigfile do
     ad_usrlvl:        node['librenms']['auth_ad']['usergroup_level'],
     add_conf_enabled: node['librenms']['add_config_file']['enabled'],
     add_conf_file:    node['librenms']['add_config_file']['path'],
-    rrddir:           node['librenms']['rrd_dir'],
   )
 end
 
