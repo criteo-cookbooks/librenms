@@ -3,8 +3,8 @@ default['mariadb']['user_librenms']['password'] = 'default'
 default['mariadb']['bind_address'] = '127.0.0.1'
 
 default['librenms']['root_dir'] = '/var/opt/'
-default['librenms']['path'] = "node['librenms']['root_dir']/librenms"
-default['librenms']['rrd_dir'] = "node['librenms']['path']/rrd"
+default['librenms']['path'] = ::File.join(node['librenms']['root_dir'], 'librenms')
+default['librenms']['rrd_dir'] = ::File.join(node['librenms']['path'], 'rrd')
 default['librenms']['user']  = 'librenms'
 default['librenms']['group'] = 'librenms'
 
@@ -81,7 +81,6 @@ default['librenms']['cron']['check']['minute'] = '*/5'
 default['librenms']['rrdcached']['enabled'] = false
 default['librenms']['rrdcached']['config_file'] = '/etc/sysconfig/rrdcached'
 default['librenms']['rrdcached']['options'] = '-w 1800 -z 1800 -f 3600 -B -R -j /var/tmp -l unix:/var/run/rrdcached/rrdcached.sock -t 4 -F'
-default['librenms']['rrdcached']['path'] = "node['librenms']['path']/rrd"
 
 # autodiscover switches
 default['librenms']['autodiscover']['xdp'] = false
