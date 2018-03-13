@@ -2,7 +2,7 @@
 default['mariadb']['user_librenms']['password'] = 'default'
 default['mariadb']['bind_address'] = '127.0.0.1'
 
-default['librenms']['root_dir'] = '/var/opt/'
+default['librenms']['root_dir'] = '/var/opt'
 default['librenms']['path'] = ::File.join(node['librenms']['root_dir'], 'librenms')
 default['librenms']['rrd_dir'] = ::File.join(node['librenms']['path'], 'rrd')
 default['librenms']['user']  = 'librenms'
@@ -48,7 +48,6 @@ default['librenms']['install']['checksum'] = nil
 default['librenms']['auto_update_enabled'] = 1
 
 # optional additional config file to include in config.php
-default['librenms']['add_config_file']['enabled'] = false
 default['librenms']['add_config_file']['path'] = ''
 
 # cron jobs mgmt
