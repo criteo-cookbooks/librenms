@@ -35,9 +35,25 @@ when 'debian'
     action :install
     only_if { node['librenms']['auth_ad']['enabled'] }
   end
-    
+
   package rrdcached do
     action :install
+    only_if { node['librenms']['rrdcached']['enabled'] }
+  end
+
+  template rrdcached_config do
+    source 'rrdcached.erb'
+    owner 'root'
+    group 'root'
+    mode '0644'
+    variables(
+      options:      node['librenms']['rrdcached']['options'],
+      user_options: node['librenms']['rrdcached']['user_options'],
+      user:         librenms_username,
+      group:        librenms_group,
+      dir:          librenms_rrddir,
+    )
+    notifies :restart, 'service[rrdcached]'
     only_if { node['librenms']['rrdcached']['enabled'] }
   end
 
@@ -75,7 +91,6 @@ when 'debian'
 when 'rhel'
 
   librenms_phpconf = '/etc/php.d/librenms.ini'
-  rrdcached_config = '/etc/sysconfig/rrdcached'
 
   include_recipe 'yum-epel'
 
@@ -130,6 +145,27 @@ when 'rhel'
 
   apache_module 'php7' do
     filename 'libphp7.so'
+  end
+
+  systemd_unit 'rrdcached.service' do
+    content <<-FOO.gsub(/^\s+/, '')
+    [Unit]
+    Description=Data caching daemon for rrdtool
+    After=network.service
+
+    [Service]
+    PIDFile=/var/run/rrdcached.pid
+    ExecStart=/usr/sbin/rrdcached #{node['librenms']['rrdcached']['options']} -s #{node['librenms']['user']} -U #{node['librenms']['user']} -G #{node['librenms']['group']} -b #{node['librenms']['root_dir']}/librenms-#{librenms_version}/rrd
+    RemainAfterExit=yes
+    User=root
+    TimeoutStartSec=300
+
+    [Install]
+    WantedBy=default.target
+
+    FOO
+
+    action %i[create enable]
   end
 
 end
@@ -253,22 +289,6 @@ web_app 'librenms' do
   docroot "#{librenms_homedir}/html"
   directory_options node['librenms']['web']['options']
   allow_override node['librenms']['web']['override']
-end
-
-template rrdcached_config do
-  source 'rrdcached.erb'
-  owner 'root'
-  group 'root'
-  mode '0644'
-  variables(
-    options:      node['librenms']['rrdcached']['options'],
-    user_options: node['librenms']['rrdcached']['user_options'],
-    user:         librenms_username,
-    group:        librenms_group,
-    dir:          librenms_rrddir,
-  )
-  notifies :restart, 'service[rrdcached]'
-  only_if { node['librenms']['rrdcached']['enabled'] }
 end
 
 template librenms_phpconfigfile do
