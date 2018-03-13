@@ -48,7 +48,6 @@ default['librenms']['install']['checksum'] = nil
 default['librenms']['auto_update_enabled'] = 1
 
 # optional additional config file to include in config.php
-default['librenms']['add_config_file']['enabled'] = false
 default['librenms']['add_config_file']['path'] = ''
 
 # cron jobs mgmt
