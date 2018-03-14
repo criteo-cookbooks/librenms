@@ -7,7 +7,6 @@
 include_recipe 'apache2'
 include_recipe 'logrotate'
 
-tmpdir = node['librenms']['install']['tmpdir']
 librenms_rootdir = node['librenms']['root_dir']
 librenms_homedir = ::File.join(node['librenms']['root_dir'], 'librenms')
 librenms_logdir = ::File.join(librenms_homedir, 'logs')
@@ -16,7 +15,6 @@ librenms_username = node['librenms']['user']
 librenms_group = node['librenms']['group']
 librenms_version = node['librenms']['install']['version']
 librenms_file = "#{librenms_version}.zip"
-librenms_archive = ::File.join(tmpdir, librenms_version)
 librenms_phpconfigfile = ::File.join(librenms_homedir, 'config.php')
 
 case node['platform_family']
@@ -183,35 +181,23 @@ user librenms_username do
   manage_home false
 end
 
-remote_file "#{librenms_archive}.zip" do
-  source "#{node['librenms']['install']['url']}/#{librenms_file}"
+ark 'librenms' do
+  url "#{node['librenms']['install']['url']}/#{librenms_file}"
+  path librenms_rootdir
+  home_dir librenms_homedir
+  mode '0755'
+  checksum node['librenms']['install']['checksum'] unless node['librenms']['install']['checksum'].nil?
+  version librenms_version
   owner librenms_username
   group librenms_group
-  mode '0755'
-  not_if { ::File.exist? librenms_archive }
-  checksum node['librenms']['install']['checksum'] unless node['librenms']['install']['checksum'].nil?
-end
-
-execute 'extract librenms archive' do
-  command "/usr/bin/unzip -o #{librenms_archive} -d #{librenms_rootdir}"
-  user 'root'
-  group 'root'
-  umask '022'
-  not_if { ::File.exist? File.join(librenms_homedir, 'README.md') }
-end
-
-execute 'create symlink' do
-  command "ln -s #{node['librenms']['root_dir']}/librenms-#{librenms_version} #{librenms_homedir}"
-  user 'root'
-  group 'root'
-  not_if { ::File.exist? librenms_homedir }
+  action :install
 end
 
 execute 'find and chown' do
-  command "find #{librenms_homedir} ! -user #{librenms_username} -exec chown #{librenms_username}:#{librenms_group} {} \;"
+  command "find #{librenms_homedir} ! -user #{librenms_username} -exec chown #{librenms_username}:#{librenms_group} {} \\;"
   user 'root'
   group 'root'
-  not_if "find #{librenms_homedir} ! -user #{librenms_username} | grep #{librenms_homedir}"
+  only_if "find -L #{librenms_homedir} ! -user #{librenms_username} | grep #{librenms_homedir}"
 end
 
 directory librenms_rrddir do
@@ -300,7 +286,7 @@ template librenms_phpconfigfile do
     db_pass:            node['mariadb']['user_librenms']['password'],
     user:               librenms_username,
     path:               librenms_homedir,
-    rrdc_enabled:       node['librenms']['rrdcached']['enabled'],
+    rrdcached_enabled:  node['librenms']['rrdcached']['enabled'],
     auto_up:            node['librenms']['auto_update_enabled'],
     xdp:                node['librenms']['autodiscover']['xdp'],
     ospf:               node['librenms']['autodiscover']['ospf'],
