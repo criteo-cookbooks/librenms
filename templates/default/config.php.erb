@@ -27,7 +27,7 @@ $config['rrd_dir']        = "<%= @rrddir %>";
 #$config['base_url']        = "http://";
 
 <% if @rrdcached_enabled == true %>
-  $config['rrdcached']    = "unix:/var/run/rrdcached.sock";
+  $config['rrdcached']    = "unix:/var/run/rrdcached/rrdcached.sock";
 <% end %>
 
 ### Default community

@@ -286,7 +286,7 @@ template librenms_phpconfigfile do
     db_pass:            node['mariadb']['user_librenms']['password'],
     user:               librenms_username,
     path:               librenms_homedir,
-    rrdc_enabled:       node['librenms']['rrdcached']['enabled'],
+    rrdcached_enabled:  node['librenms']['rrdcached']['enabled'],
     auto_up:            node['librenms']['auto_update_enabled'],
     xdp:                node['librenms']['autodiscover']['xdp'],
     ospf:               node['librenms']['autodiscover']['ospf'],
