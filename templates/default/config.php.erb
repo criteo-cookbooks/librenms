@@ -26,7 +26,7 @@ $config['rrd_dir']        = "<%= @rrddir %>";
 ### It will prevent the web interface being usable form any other hostname
 #$config['base_url']        = "http://";
 
-<% if @rrdcached_enabled == true %>
+<% if @rrdc_enabled == true %>
   $config['rrdcached']    = "unix:/var/run/rrdcached/rrdcached.sock";
 <% end %>
 
