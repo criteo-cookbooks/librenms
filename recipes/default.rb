@@ -208,10 +208,10 @@ execute 'create symlink' do
 end
 
 execute 'find and chown' do
-  command "find #{librenms_homedir} ! -user #{librenms_username} -exec chown #{librenms_username}:#{librenms_group} {} \;"
+  command "find -L #{librenms_homedir} ! -user #{librenms_username} -exec chown #{librenms_username}:#{librenms_group} {} \;"
   user 'root'
   group 'root'
-  not_if "find #{librenms_homedir} ! -user #{librenms_username} | grep #{librenms_homedir}"
+  not_if "find -L #{librenms_homedir} ! -user #{librenms_username} | grep #{librenms_homedir}"
 end
 
 directory librenms_rrddir do
