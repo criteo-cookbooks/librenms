@@ -156,9 +156,7 @@ when 'rhel'
     [Service]
     PIDFile=/var/run/rrdcached.pid
     ExecStart=/usr/sbin/rrdcached #{node['librenms']['rrdcached']['options']} -s #{node['librenms']['user']} -U #{node['librenms']['user']} -G #{node['librenms']['group']} -b #{node['librenms']['root_dir']}/librenms-#{librenms_version}/rrd
-    RemainAfterExit=yes
     User=root
-    TimeoutStartSec=300
 
     [Install]
     WantedBy=default.target
@@ -166,6 +164,7 @@ when 'rhel'
     FOO
 
     action %i[create enable]
+    only_if { node['librenms']['rrdcached']['enabled'] }
   end
 
 end
