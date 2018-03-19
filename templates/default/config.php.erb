@@ -22,19 +22,11 @@ $config['memcached']['port']    = 11211;
 $config['install_dir']    = "<%= @path %>";
 $config['rrd_dir']        = "<%= @rrddir %>";
 
-### This should *only* be set if you want to *force* a particular hostname/port
-### It will prevent the web interface being usable form any other hostname
-#$config['base_url']        = "http://";
-
-<% if @rrdcached_enabled == true %>
-  $config['rrdcached']    = "unix:/var/run/rrdcached/rrdcached.sock";
+<% if @rrdc_enabled %>
+$config['rrdcached']    = "unix:/var/run/rrdcached/rrdcached.sock";
 <% end %>
 
-### Default community
 $config['snmp']['community'] = array("public");
-
-### Authentication Model
-$config['auth_mechanism'] = "mysql"; # default, other options: ldap, http-auth
 
 $config['update'] = <%= @auto_up %>;
 
@@ -49,20 +41,22 @@ $config['rrdtool_version'] = '1.5.5';
 $config['geoloc']['latlng'] = true;
 $config['geoloc']['engine'] = "google"; //Only one available at present
 
-<% if @ad_enabled == true %>
- $config['auth_mechanism']                  = "active_directory";
- $config['auth_ad_url']                     = "<%= @ad_url %>";
- $config['auth_ad_domain']                  = "<%= @ad_domain %>";
- $config['auth_ad_base_dn']                 = "<%= @ad_dn %>";
- $config['auth_ad_check_certificates']      = <%= @ad_check %>;
- $config['auth_ad_binduser']                = '<%= @ad_user %>';
- $config['auth_ad_bindpassword']            = '<%= @ad_pass %>';
- $config['auth_ad_timeout']                 = <%= @ad_timeout %>;
- $config['auth_ad_debug']                   = <%= @ad_debug %>;
- $config['active_directory']['users_purge'] = <%= @ad_purge %>;
- $config['auth_ad_require_groupmembership'] = <%= @ad_req %>;
- $config['auth_ad_groups']['<ad-admingroup>']['level'] = <%= @ad_admlvl %>;
- $config['auth_ad_groups']['<ad-usergroup>']['level']  = <%= @ad_usrlvl %>;
+<% if @ad_enabled %>
+$config['auth_mechanism']                  = "active_directory";
+$config['auth_ad_url']                     = "<%= @ad_url %>";
+$config['auth_ad_domain']                  = "<%= @ad_domain %>";
+$config['auth_ad_base_dn']                 = "<%= @ad_dn %>";
+$config['auth_ad_check_certificates']      = <%= @ad_check %>;
+$config['auth_ad_binduser']                = '<%= @ad_user %>';
+$config['auth_ad_bindpassword']            = '<%= @ad_pass %>';
+$config['auth_ad_timeout']                 = <%= @ad_timeout %>;
+$config['auth_ad_debug']                   = <%= @ad_debug %>;
+$config['active_directory']['users_purge'] = <%= @ad_purge %>;
+$config['auth_ad_require_groupmembership'] = <%= @ad_req %>;
+$config['auth_ad_groups']['<ad-admingroup>']['level'] = <%= @ad_admlvl %>;
+$config['auth_ad_groups']['<ad-usergroup>']['level']  = <%= @ad_usrlvl %>;
+<% else %>
+$config['auth_mechanism'] = "mysql"; # default, other options: ldap, http-auth
 <% end %>
 
 <% if ( @add_conf_file_path != '' ) %>
