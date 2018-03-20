@@ -184,7 +184,7 @@ ark 'librenms' do
   url "#{node['librenms']['install']['url']}/#{librenms_file}"
   path librenms_rootdir
   home_dir librenms_homedir
-  mode '0755'
+  mode 0755
   checksum node['librenms']['install']['checksum'] unless node['librenms']['install']['checksum'].nil?
   version librenms_version
   owner librenms_username
