@@ -154,9 +154,7 @@ when 'rhel'
     [Service]
     PIDFile=/var/run/rrdcached.pid
     ExecStart=/usr/sbin/rrdcached #{node['librenms']['rrdcached']['options']} -s #{node['librenms']['user']} -U #{node['librenms']['user']} -G #{node['librenms']['group']} -b #{node['librenms']['root_dir']}/librenms-#{librenms_version}/rrd
-    RemainAfterExit=yes
     User=root
-    TimeoutStartSec=300
 
     [Install]
     WantedBy=default.target
@@ -164,6 +162,7 @@ when 'rhel'
     FOO
 
     action %i[create enable]
+    only_if { node['librenms']['rrdcached']['enabled'] }
   end
 
 end
@@ -194,10 +193,10 @@ ark 'librenms' do
 end
 
 execute 'find and chown' do
-  command "find #{librenms_homedir} ! -user #{librenms_username} -exec chown #{librenms_username}:#{librenms_group} {} \;"
+  command "find -L #{librenms_homedir} ! -user #{librenms_username} -exec chown #{librenms_username}:#{librenms_group} {} \;"
   user 'root'
   group 'root'
-  not_if "find #{librenms_homedir} ! -user #{librenms_username} | grep #{librenms_homedir}"
+  not_if "find -L #{librenms_homedir} ! -user #{librenms_username} | grep #{librenms_homedir}"
 end
 
 directory librenms_rrddir do
