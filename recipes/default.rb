@@ -132,7 +132,7 @@ when 'rhel'
 
   package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common
              net-snmp ImageMagick jwhois nmap mtr rrdtool MySQL-python net-snmp-utils
-             cronie php70w-mcrypt fping git unzip] do
+             composer cronie php70w-mcrypt fping git unzip] do
     action :install
   end
 
@@ -307,6 +307,14 @@ template librenms_phpconfigfile do
     add_conf_file_path: node['librenms']['add_config_file']['path'],
     rrddir:             node['librenms']['rrd_dir'],
   )
+end
+
+execute 'install composer dependencies' do
+  action :run
+  command 'php scripts/composer_wrapper.php install --no-dev'
+  cwd librenms_homedir
+  user 'root'
+  group 'root'
 end
 
 execute 'build base' do
