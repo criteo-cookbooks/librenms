@@ -80,8 +80,8 @@ default['librenms']['cron']['check']['minute'] = '*/5'
 # rrdcached
 default['librenms']['rrdcached']['enabled'] = false
 default['librenms']['rrdcached']['config_file'] = '/etc/sysconfig/rrdcached'
-default['librenms']['rrdcached']['options'] = '-w 1800 -z 1800 -f 3600 -B -R -j /var/tmp -l unix:/var/run/rrdcached/rrdcached.sock -t 4 -F'
-default['librenms']['rrdcached']['path'] = "node['librenms']['path']/rrd"
+default['librenms']['rrdcached']['options'] = '-w 1800 -z 1800 -f 3600 -j /var/tmp -l unix:/var/run/rrdcached/rrdcached.sock -t 4 -F'
+default['librenms']['rrdcached']['path'] = "node['librenms']['path']/rrd/"
 
 # autodiscover switches
 default['librenms']['autodiscover']['xdp'] = false
