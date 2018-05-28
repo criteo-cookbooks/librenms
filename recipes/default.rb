@@ -211,7 +211,10 @@ template librenms_phpconf do
   source 'librenms.ini.erb'
   owner 'root'
   group 'root'
-  variables(timezone: node['librenms']['phpini']['timezone'])
+  variables(
+    memory_limit: node['librenms']['phpini']['memory_limit'],
+    timezone: node['librenms']['phpini']['timezone'],
+  )
   mode '0644'
 end
 
