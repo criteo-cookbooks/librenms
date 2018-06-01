@@ -24,8 +24,8 @@ when 'debian'
   rrdcached_config = '/etc/default/rrdcached'
 
   package %w[composer fping git graphviz imagemagick libapache2-mod-php7.0 mariadb-client mariadb-server
-             mtr-tiny nmap php7.0-cli php7.0-curl php7.0-gd php7.0-json php7.0-mcrypt php7.0-mysql php7.0-snmp
-             php7.0-xml php7.0-zip python-memcache python-mysqldb rrdtool snmp snmpd whois] do
+             mtr-tiny nmap php7.0-cli php7.0-curl php7.0-gd php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql
+             php7.0-snmp php7.0-xml php7.0-zip python-memcache python-mysqldb rrdtool snmp snmpd whois] do
     action :install
   end
 
@@ -130,9 +130,9 @@ when 'rhel'
     only_if { node['librenms']['rrdcached']['enabled'] }
   end
 
-  package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common
-             php70w-process net-snmp ImageMagick jwhois nmap mtr rrdtool MySQL-python net-snmp-utils
-             composer cronie php70w-mcrypt fping git unzip] do
+  package %w[php70w php70w-cli php70w-common php70w-curl php70w-gd php70w-mbstring
+             php70w-mcrypt php70w-mysql php70w-process php70w-snmp net-snmp ImageMagick jwhois
+             nmap mtr rrdtool MySQL-python net-snmp-utils composer cronie fping git unzip] do
     action :install
   end
 
