@@ -11,6 +11,8 @@ librenms_rootdir = node['librenms']['root_dir']
 librenms_homedir = ::File.join(node['librenms']['root_dir'], 'librenms')
 librenms_logdir = ::File.join(librenms_homedir, 'logs')
 librenms_rrddir = node['librenms']['rrd_dir']
+librenms_bootstrap_cachedir = node['librenms']['bootstrap_cache_dir']
+librenms_storagedir = node['librenms']['storage_dir']
 librenms_username = node['librenms']['user']
 librenms_group = node['librenms']['group']
 librenms_version = node['librenms']['install']['version']
@@ -205,6 +207,22 @@ directory librenms_rrddir do
   mode '0755'
   action :create
   not_if { ::File.exist? librenms_rrddir }
+end
+
+directory librenms_bootstrap_cachedir do
+  owner librenms_username
+  group librenms_group
+  mode '0755'
+  action :create
+  not_if { ::File.exist? librenms_bootstrap_cachedir }
+end
+
+directory librenms_storagedir do
+  owner librenms_username
+  group librenms_group
+  mode '0755'
+  action :create
+  not_if { ::File.exist? librenms_storagedir }
 end
 
 template librenms_phpconf do

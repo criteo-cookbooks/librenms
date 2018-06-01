@@ -5,6 +5,8 @@ default['mariadb']['bind_address'] = '127.0.0.1'
 default['librenms']['root_dir'] = '/var/opt'
 default['librenms']['path'] = ::File.join(node['librenms']['root_dir'], 'librenms')
 default['librenms']['rrd_dir'] = ::File.join(node['librenms']['path'], 'rrd')
+default['librenms']['bootstrap_cache_dir'] = ::File.join(node['librenms']['path'], 'bootstrap', 'cache')
+default['librenms']['storage_dir'] = ::File.join(node['librenms']['path'], 'storage')
 default['librenms']['user']  = 'librenms'
 default['librenms']['group'] = 'librenms'
 
