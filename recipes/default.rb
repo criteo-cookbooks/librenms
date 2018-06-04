@@ -9,6 +9,7 @@ include_recipe 'logrotate'
 
 librenms_rootdir = node['librenms']['root_dir']
 librenms_homedir = ::File.join(node['librenms']['root_dir'], 'librenms')
+librenms_env_file = ::File.join(librenms_homedir, '.env')
 librenms_logdir = ::File.join(librenms_homedir, 'logs')
 librenms_rrddir = node['librenms']['rrd_dir']
 librenms_bootstrap_cachedir = node['librenms']['bootstrap_cache_dir']
@@ -223,6 +224,17 @@ directory librenms_storagedir do
   mode '0755'
   action :create
   not_if { ::File.exist? librenms_storagedir }
+end
+
+template librenms_env_file do
+  source 'env.erb'
+  owner librenms_username
+  group librenms_group
+  variables(
+    app_key: node['librenms']['env']['app_key'],
+  )
+  mode '0644'
+  action :create
 end
 
 template librenms_phpconf do

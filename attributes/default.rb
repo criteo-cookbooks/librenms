@@ -10,6 +10,9 @@ default['librenms']['storage_dir'] = ::File.join(node['librenms']['path'], 'stor
 default['librenms']['user']  = 'librenms'
 default['librenms']['group'] = 'librenms'
 
+# env related
+default['librenms']['env']['app_key'] = 'Ch4ng3m3pl34s3TyChangeMePleaseTy'
+
 # httpd related
 default['librenms']['web']['name'] = 'librenms.example.com'
 default['librenms']['web']['port'] = '80'
