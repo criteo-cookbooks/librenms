@@ -218,7 +218,6 @@ directory librenms_bootstrap_cachedir do
   group librenms_group
   mode '0755'
   action :create
-  not_if { ::File.exist? librenms_bootstrap_cachedir }
 end
 
 directory librenms_storagedir do
@@ -226,7 +225,6 @@ directory librenms_storagedir do
   group librenms_group
   mode '0755'
   action :create
-  not_if { ::File.exist? librenms_storagedir }
 end
 
 template librenms_env_file do
