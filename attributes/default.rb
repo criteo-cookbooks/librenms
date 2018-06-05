@@ -14,6 +14,7 @@ default['librenms']['web']['port'] = '80'
 default['librenms']['web']['enablephp'] = true
 default['librenms']['web']['options'] = 'FollowSymLinks MultiViews'
 default['librenms']['web']['override'] = 'All'
+default['librenms']['phpini']['memory_limit'] = '128M'
 default['librenms']['phpini']['timezone'] = 'UTC'
 
 # snmpd
