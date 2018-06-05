@@ -4,9 +4,9 @@
 ### Database config
 $config['db_host'] = 'localhost';
 $config['db_port'] = '3306';
-$config['db_user'] = 'librenms';
+$config['db_user'] = '<%= @db_user %>';
 $config['db_pass'] = '<%= @db_pass %>';
-$config['db_name'] = 'librenms';
+$config['db_name'] = '<%= database_name %>';
 $config['db_socket'] = '';
 
 // This is the user LibreNMS will run as

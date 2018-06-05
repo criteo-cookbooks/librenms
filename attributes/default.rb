@@ -1,4 +1,6 @@
 
+default['mariadb']['database']['name'] = 'librenms'
+default['mariadb']['user_librenms']['username'] = 'librenms'
 default['mariadb']['user_librenms']['password'] = 'default'
 default['mariadb']['bind_address'] = '127.0.0.1'
 default['mariadb']['max_connections'] = 302

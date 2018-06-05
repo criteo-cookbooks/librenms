@@ -317,7 +317,9 @@ template librenms_phpconfigfile do
   group librenms_group
   mode '0644'
   variables(
+    db_user:            node['mariadb']['user_librenms']['username'],
     db_pass:            node['mariadb']['user_librenms']['password'],
+    database_name:      node['mariadb']['database']['name'],
     user:               librenms_username,
     path:               librenms_homedir,
     rrdc_enabled:       node['librenms']['rrdcached']['enabled'],
