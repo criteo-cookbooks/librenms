@@ -14,7 +14,12 @@ default['librenms']['user']  = 'librenms'
 default['librenms']['group'] = 'librenms'
 
 # env related
-default['librenms']['env']['app_key'] = 'Ch4ng3m3pl34s3TyChangeMePleaseTy'
+default['librenms']['env']['APP_KEY'] = 'Ch4ng3m3pl34s3TyChangeMePleaseTy'
+default['librenms']['env']['DB_HOST'] = 'localhost'
+default['librenms']['env']['DB_DATABASE'] = node['mariadb']['database']['name']
+default['librenms']['env']['DB_USERNAME'] = node['mariadb']['user_librenms']['username']
+default['librenms']['env']['DB_PASSWORD'] = node['mariadb']['user_librenms']['password']
+default['librenms']['env']['APP_URL'] = 'http://' + node['librenms']['web']['name'] + '/'
 
 # httpd related
 default['librenms']['web']['name'] = 'librenms.example.com'
