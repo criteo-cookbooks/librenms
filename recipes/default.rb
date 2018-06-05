@@ -73,7 +73,10 @@ when 'debian'
     owner 'root'
     group 'root'
     mode '0644'
-    variables(bind_address: node['mariadb']['bind_address'])
+    variables(
+      bind_address: node['mariadb']['bind_address'],
+      max_connections: node['mariadb']['max_connections'],
+    )
     notifies :restart, 'service[mysql]'
   end
 
