@@ -11,6 +11,8 @@ librenms_rootdir = node['librenms']['root_dir']
 librenms_homedir = ::File.join(node['librenms']['root_dir'], 'librenms')
 librenms_logdir = ::File.join(librenms_homedir, 'logs')
 librenms_rrddir = node['librenms']['rrd_dir']
+librenms_bootstrap_cachedir = node['librenms']['bootstrap_cache_dir']
+librenms_storagedir = node['librenms']['storage_dir']
 librenms_username = node['librenms']['user']
 librenms_group = node['librenms']['group']
 librenms_version = node['librenms']['install']['version']
@@ -24,8 +26,8 @@ when 'debian'
   rrdcached_config = '/etc/default/rrdcached'
 
   package %w[composer fping git graphviz imagemagick libapache2-mod-php7.0 mariadb-client mariadb-server
-             mtr-tiny nmap php7.0-cli php7.0-curl php7.0-gd php7.0-json php7.0-mcrypt php7.0-mysql php7.0-snmp
-             php7.0-xml php7.0-zip python-memcache python-mysqldb rrdtool snmp snmpd whois] do
+             mtr-tiny nmap php7.0-cli php7.0-curl php7.0-gd php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql
+             php7.0-snmp php7.0-xml php7.0-zip python-memcache python-mysqldb rrdtool snmp snmpd whois] do
     action :install
   end
 
@@ -70,7 +72,10 @@ when 'debian'
     owner 'root'
     group 'root'
     mode '0644'
-    variables(bind_address: node['mariadb']['bind_address'])
+    variables(
+      bind_address: node['mariadb']['bind_address'],
+      max_connections: node['mariadb']['max_connections'],
+    )
     notifies :restart, 'service[mysql]'
   end
 
@@ -130,9 +135,9 @@ when 'rhel'
     only_if { node['librenms']['rrdcached']['enabled'] }
   end
 
-  package %w[php70w php70w-cli php70w-gd php70w-mysql php70w-snmp php70w-curl php70w-common
-             php70w-process net-snmp ImageMagick jwhois nmap mtr rrdtool MySQL-python net-snmp-utils
-             composer cronie php70w-mcrypt fping git unzip] do
+  package %w[php70w php70w-cli php70w-common php70w-curl php70w-gd php70w-mbstring
+             php70w-mcrypt php70w-mysql php70w-process php70w-snmp net-snmp ImageMagick jwhois
+             nmap mtr rrdtool MySQL-python net-snmp-utils composer cronie fping git unzip] do
     action :install
   end
 
@@ -183,20 +188,12 @@ end
 ark 'librenms' do
   url "#{node['librenms']['install']['url']}/#{librenms_file}"
   path librenms_rootdir
-  home_dir librenms_homedir
   mode 0755
   checksum node['librenms']['install']['checksum'] unless node['librenms']['install']['checksum'].nil?
   version librenms_version
   owner librenms_username
   group librenms_group
-  action :install
-end
-
-execute 'find and chown' do
-  command "find -L #{librenms_homedir} ! -user #{librenms_username} -exec chown #{librenms_username}:#{librenms_group} {} \\;"
-  user 'root'
-  group 'root'
-  not_if "find -L #{librenms_homedir} ! -user #{librenms_username} | grep #{librenms_homedir}"
+  action :put
 end
 
 directory librenms_rrddir do
@@ -205,6 +202,27 @@ directory librenms_rrddir do
   mode '0755'
   action :create
   not_if { ::File.exist? librenms_rrddir }
+end
+
+directory librenms_bootstrap_cachedir do
+  owner librenms_username
+  group librenms_group
+  mode '0755'
+  action :create
+end
+
+directory librenms_storagedir do
+  owner librenms_username
+  group librenms_group
+  mode '0755'
+  action :create
+end
+
+file ::File.join(librenms_homedir, '.env') do
+  owner librenms_username
+  group librenms_group
+  mode '0644'
+  content node['librenms']['env'].map { |k, v| "#{k}='#{v}'" }.join("\n")
 end
 
 template librenms_phpconf do
@@ -216,6 +234,7 @@ template librenms_phpconf do
     timezone: node['librenms']['phpini']['timezone'],
   )
   mode '0644'
+  notifies :reload, 'service[apache2], :immediately'
 end
 
 template '/tmp/create_db.sql' do
@@ -285,7 +304,9 @@ template librenms_phpconfigfile do
   group librenms_group
   mode '0644'
   variables(
+    db_user:            node['mariadb']['user_librenms']['username'],
     db_pass:            node['mariadb']['user_librenms']['password'],
+    database_name:      node['mariadb']['database']['name'],
     user:               librenms_username,
     path:               librenms_homedir,
     rrdc_enabled:       node['librenms']['rrdcached']['enabled'],
