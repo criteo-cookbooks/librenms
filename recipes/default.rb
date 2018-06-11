@@ -234,7 +234,12 @@ template librenms_phpconf do
     timezone: node['librenms']['phpini']['timezone'],
   )
   mode '0644'
-  notifies :reload, 'service[apache2], :immediately'
+  case node['platform_family']
+  when 'debian'
+    notifies :reload, 'service[apache2]', ':immediately'
+  when 'rhel'
+    notifies :reload, 'service[httpd]', ':immediately'
+  end
 end
 
 template '/tmp/create_db.sql' do
