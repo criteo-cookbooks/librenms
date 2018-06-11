@@ -208,6 +208,7 @@ directory librenms_bootstrap_cachedir do
   owner librenms_username
   group librenms_group
   mode '0755'
+  recursive true
   action :create
 end
 
