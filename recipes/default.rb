@@ -237,9 +237,9 @@ template librenms_phpconf do
   mode '0644'
   case node['platform_family']
   when 'debian'
-    notifies :reload, 'service[apache2]', ':immediately'
+    notifies :reload, 'service[apache2]'
   when 'rhel'
-    notifies :reload, 'service[httpd]', ':immediately'
+    notifies :reload, 'service[httpd]'
   end
 end
 
