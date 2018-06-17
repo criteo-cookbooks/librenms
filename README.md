@@ -63,6 +63,21 @@ The release is tested on:
     <td>SNMP community</td>
     <td><code>public</code></td>
   </tr>
+  <tr>
+    <td><code>node['librenms']['auth_ad']['admingroup']</code></td>
+    <td>Name of the AD group for admin users</td>
+    <td><code></code></td>
+  </tr>
+  <tr>
+    <td><code>node['librenms']['auth_ad']['apigroup']</code></td>
+    <td>Name of the AD group for api users</td>
+    <td><code></code></td>
+  </tr>
+  <tr>
+    <td><code>node['librenms']['auth_ad']['usergroup']</code></td>
+    <td>Name of the AD group for read-only users</td>
+    <td><code></code></td>
+  </tr>
 </table>
 
 ### Features

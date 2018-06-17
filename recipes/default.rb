@@ -332,8 +332,9 @@ template librenms_phpconfigfile do
     ad_debug:           node['librenms']['auth_ad']['debug_enabled'],
     ad_purge:           node['librenms']['auth_ad']['users_purge'],
     ad_req:             node['librenms']['auth_ad']['req_member'],
-    ad_admlvl:          node['librenms']['auth_ad']['admingroup_level'],
-    ad_usrlvl:          node['librenms']['auth_ad']['usergroup_level'],
+    ad_adm:             node['librenms']['auth_ad']['admingroup'],
+    ad_api:             node['librenms']['auth_ad']['apigroup'],
+    ad_usr:             node['librenms']['auth_ad']['usergroup'],
     add_conf_file_path: node['librenms']['add_config_file']['path'],
     rrddir:             node['librenms']['rrd_dir'],
   )

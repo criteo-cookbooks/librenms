@@ -53,8 +53,9 @@ $config['auth_ad_timeout']                 = <%= @ad_timeout %>;
 $config['auth_ad_debug']                   = <%= @ad_debug %>;
 $config['active_directory']['users_purge'] = <%= @ad_purge %>;
 $config['auth_ad_require_groupmembership'] = <%= @ad_req %>;
-$config['auth_ad_groups']['<ad-admingroup>']['level'] = <%= @ad_admlvl %>;
-$config['auth_ad_groups']['<ad-usergroup>']['level']  = <%= @ad_usrlvl %>;
+$config['auth_ad_groups']['<%= ad_adm %>']['level'] = 10;
+$config['auth_ad_groups']['<%= ad_api %>']['level'] = 10;
+$config['auth_ad_groups']['<%= ad_usr %>']['level']  = 5;
 <% else %>
 $config['auth_mechanism'] = "mysql"; # default, other options: ldap, http-auth
 <% end %>
@@ -63,4 +64,5 @@ $config['auth_mechanism'] = "mysql"; # default, other options: ldap, http-auth
 if(file_exists( __DIR__ . DIRECTORY_SEPARATOR .  '<%= @add_conf_file_path %>')) {
     include __DIR__ . DIRECTORY_SEPARATOR .  '<%= @add_conf_file_path %>';
 }
+A
 <% end %>
