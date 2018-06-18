@@ -55,6 +55,14 @@ $config['active_directory']['users_purge'] = <%= @ad_purge %>;
 $config['auth_ad_require_groupmembership'] = <%= @ad_req %>;
 $config['auth_ad_groups']['<ad-admingroup>']['level'] = <%= @ad_admlvl %>;
 $config['auth_ad_groups']['<ad-usergroup>']['level']  = <%= @ad_usrlvl %>;
+<% elsif @radius_enabled %>
+$config['auth_mechanism']                 = "radius";
+$config['radius']['hostname']             = '<%= @radius_server %>';
+$config['radius']['port']                 = '<%= @radius_port%>';
+$config['radius']['secret']               = '<%= @radius_secret %>';
+$config['radius']['timeout']              = <%= @radius_timeout %>;
+$config['radius']['users_purge']          = <%= @radius_user_purge %>;
+$config['radius']['default_level']        = <%= @radius_default_lvl %>;
 <% else %>
 $config['auth_mechanism'] = "mysql"; # default, other options: ldap, http-auth
 <% end %>

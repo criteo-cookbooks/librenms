@@ -116,3 +116,12 @@ default['librenms']['auth_ad']['users_purge'] = '30'
 default['librenms']['auth_ad']['req_member'] = 'false'
 default['librenms']['auth_ad']['admingroup_level'] = '10'
 default['librenms']['auth_ad']['usergroup_level'] = '5'
+
+# Radius auth
+default['librenms']['auth_radius']['enabled'] = false
+default['librenms']['auth_radius']['server'] = 'radius.your-domain.com'
+default['librenms']['auth_radius']['port'] = '1812'
+default['librenms']['auth_radius']['secret'] = 'examplesecret'
+default['librenms']['auth_radius']['timeout'] = 3
+default['librenms']['auth_radius']['users_purge'] = 14
+default['librenms']['auth_radius']['default_level'] = 1

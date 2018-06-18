@@ -114,7 +114,10 @@ when 'rhel'
     owner 'root'
     group 'root'
     mode '0644'
-    variables(bind_address: node['mariadb']['bind_address'])
+    variables(
+      bind_address: node['mariadb']['bind_address'],
+      max_connections: node['mariadb']['max_connections'],
+    )
     notifies :restart, 'service[mariadb]'
   end
 
@@ -238,9 +241,9 @@ template librenms_phpconf do
   mode '0644'
   case node['platform_family']
   when 'debian'
-    notifies :reload, 'service[apache2]', ':immediately'
+    notifies :reload, 'service[apache2]'
   when 'rhel'
-    notifies :reload, 'service[httpd]', ':immediately'
+    notifies :reload, 'service[httpd]'
   end
 end
 
@@ -335,6 +338,13 @@ template librenms_phpconfigfile do
     ad_req:             node['librenms']['auth_ad']['req_member'],
     ad_admlvl:          node['librenms']['auth_ad']['admingroup_level'],
     ad_usrlvl:          node['librenms']['auth_ad']['usergroup_level'],
+    radius_enabled:     node['librenms']['auth_radius']['enabled'],
+    radius_server:      node['librenms']['auth_radius']['server'],
+    radius_port:        node['librenms']['auth_radius']['port'],
+    radius_secret:      node['librenms']['auth_radius']['secret'],
+    radius_timeout:     node['librenms']['auth_radius']['timeout'],
+    radius_user_purge:  node['librenms']['auth_radius']['users_purge'],
+    radius_default_lvl: node['librenms']['auth_radius']['default_level'],
     add_conf_file_path: node['librenms']['add_config_file']['path'],
     rrddir:             node['librenms']['rrd_dir'],
   )
