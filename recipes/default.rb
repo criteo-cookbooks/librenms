@@ -138,9 +138,10 @@ when 'rhel'
     only_if { node['librenms']['rrdcached']['enabled'] }
   end
 
-  package %w[php70w php70w-cli php70w-common php70w-curl php70w-gd php70w-mbstring
-             php70w-mcrypt php70w-mysql php70w-process php70w-snmp net-snmp ImageMagick jwhois
-             nmap mtr rrdtool MySQL-python net-snmp-utils composer cronie fping git unzip] do
+  package %w[php72w php72w-cli php72w-common php72w-curl php72w-gd php72w-mbstring
+             php72w-mcrypt php72w-mysql php72w-process php72w-snmp net-snmp ImageMagick jwhois
+             nmap mtr rrdtool MySQL-python net-snmp-utils composer cronie fping git unzip
+             php72w-mysqlnd php72w-xml php72w-zip] do
     action :install
   end
 
