@@ -136,8 +136,8 @@ when 'rhel'
   end
 
   package %w[php72w php72w-cli php72w-common php72w-curl php72w-gd php72w-mbstring
-             php72w-mcrypt php72w-mysql php72w-process php72w-snmp net-snmp ImageMagick jwhois
-             nmap mtr rrdtool MySQL-python net-snmp-utils composer cronie fping git unzip
+             php72w-process php72w-snmp net-snmp ImageMagick jwhois nmap mtr 
+             rrdtool MySQL-python net-snmp-utils composer cronie fping git unzip
              php72w-mysqlnd php72w-xml php72w-zip] do
     action :install
   end
