@@ -26,6 +26,10 @@ $config['rrd_dir']        = "<%= @rrddir %>";
 $config['rrdcached']    = "unix:/var/run/rrdcached/rrdcached.sock";
 <% end %>
 
+<% if @syslog_enabled %>
+$config['enable_syslog'] = 1;
+<% end %>
+
 $config['snmp']['community'] = array("public");
 
 $config['update'] = <%= @auto_up %>;
