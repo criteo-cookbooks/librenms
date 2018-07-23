@@ -125,3 +125,6 @@ default['librenms']['auth_radius']['secret'] = 'examplesecret'
 default['librenms']['auth_radius']['timeout'] = 3
 default['librenms']['auth_radius']['users_purge'] = 14
 default['librenms']['auth_radius']['default_level'] = 1
+
+# Syslog
+default['librenms']['syslog']['enabled'] = false

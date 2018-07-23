@@ -324,6 +324,7 @@ template librenms_phpconfigfile do
     user:               librenms_username,
     path:               librenms_homedir,
     rrdc_enabled:       node['librenms']['rrdcached']['enabled'],
+    syslog_enabled:     node['librenms']['syslog']['enabled'],
     auto_up:            node['librenms']['auto_update_enabled'],
     xdp:                node['librenms']['autodiscover']['xdp'],
     ospf:               node['librenms']['autodiscover']['ospf'],
