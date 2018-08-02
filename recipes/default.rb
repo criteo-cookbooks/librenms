@@ -203,9 +203,16 @@ end
 directory librenms_rrddir do
   owner librenms_username
   group librenms_group
-  mode '0755'
+  mode '0775'
   action :create
   not_if { ::File.exist? librenms_rrddir }
+end
+
+directory librenms_logdir do
+  owner librenms_username
+  group librenms_group
+  mode '0775'
+  action :create
 end
 
 directory librenms_bootstrap_cachedir do
