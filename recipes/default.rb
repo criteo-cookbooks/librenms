@@ -7,6 +7,10 @@
 include_recipe 'apache2'
 include_recipe 'logrotate'
 
+if node['librenms']['web']['enablessl']
+  include_recipe 'apache2::mod_ssl'
+end
+
 librenms_rootdir = node['librenms']['root_dir']
 librenms_homedir = ::File.join(node['librenms']['root_dir'], 'librenms')
 librenms_logdir = ::File.join(librenms_homedir, 'logs')
@@ -139,7 +143,7 @@ when 'rhel'
   end
 
   package %w[php72w php72w-cli php72w-common php72w-curl php72w-gd php72w-mbstring
-             php72w-process php72w-snmp net-snmp ImageMagick jwhois nmap mtr 
+             php72w-process php72w-snmp net-snmp ImageMagick jwhois nmap mtr
              rrdtool MySQL-python net-snmp-utils composer cronie fping git unzip
              php72w-mysqlnd php72w-xml php72w-zip] do
     action :install
@@ -306,6 +310,9 @@ web_app 'librenms' do
   docroot "#{librenms_homedir}/html"
   directory_options node['librenms']['web']['options']
   allow_override node['librenms']['web']['override']
+  enablessl node['librenms']['web']['enablessl']
+  ssl_cert_path node['librenms']['web']['ssl_cert_path']
+  ssl_key_path node['librenms']['web']['ssl_key_path']
 end
 
 template librenms_phpconfigfile do
