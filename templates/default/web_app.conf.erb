@@ -5,6 +5,12 @@
   <% end -%>
   DocumentRoot <%= @params[:docroot] %>
 
+  <% if @params[:enablessl] -%>
+  SSLEngine on
+  SSLCertificateFile <%= @params[:ssl_cert_path] %>
+  SSLCertificateKeyFile <%= @params[:ssl_key_path] %>
+
+  <% end -%>
   <Directory <%= @params[:docroot] %>>
     Options <%= [@params[:directory_options] || "FollowSymLinks" ].flatten.join " " %>
     AllowOverride <%= [@params[:allow_override] || "None" ].flatten.join " " %>
@@ -12,4 +18,3 @@
   </Directory>
 
 </VirtualHost>
-

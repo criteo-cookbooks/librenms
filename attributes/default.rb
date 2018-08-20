@@ -22,6 +22,10 @@ default['librenms']['web']['override'] = 'All'
 default['librenms']['phpini']['memory_limit'] = '128M'
 default['librenms']['phpini']['timezone'] = 'UTC'
 
+default['librenms']['web']['enablessl'] = false
+default['librenms']['web']['ssl_cert_path'] = '/etc/pki/tls/certs/localhost.cert'
+default['librenms']['web']['ssl_key_path'] =  '/etc/pki/tls/private/localhost.key'
+
 # env related
 default['librenms']['env']['APP_KEY'] = 'Ch4ng3m3pl34s3TyChangeMePleaseTy'
 default['librenms']['env']['DB_HOST'] = 'localhost'

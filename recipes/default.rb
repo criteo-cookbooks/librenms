@@ -7,6 +7,10 @@
 include_recipe 'apache2'
 include_recipe 'logrotate'
 
+if node['librenms']['web']['enablessl']
+  include_recipe 'apache2::mod_ssl'
+end
+
 librenms_rootdir = node['librenms']['root_dir']
 librenms_homedir = ::File.join(node['librenms']['root_dir'], 'librenms')
 librenms_logdir = ::File.join(librenms_homedir, 'logs')
@@ -310,6 +314,9 @@ web_app 'librenms' do
   docroot "#{librenms_homedir}/html"
   directory_options node['librenms']['web']['options']
   allow_override node['librenms']['web']['override']
+  enablessl node['librenms']['web']['enablessl']
+  ssl_cert_path node['librenms']['web']['ssl_cert_path']
+  ssl_key_path node['librenms']['web']['ssl_key_path']
 end
 
 template librenms_phpconfigfile do
