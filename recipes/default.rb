@@ -73,7 +73,7 @@ when 'debian'
     group 'root'
     mode '0644'
     variables(
-      bind_address: node['mariadb']['bind_address'],
+      bind_address:    node['mariadb']['bind_address'],
       max_connections: node['mariadb']['max_connections'],
     )
     notifies :restart, 'service[mysql]'
@@ -115,7 +115,7 @@ when 'rhel'
     group 'root'
     mode '0644'
     variables(
-      bind_address: node['mariadb']['bind_address'],
+      bind_address:    node['mariadb']['bind_address'],
       max_connections: node['mariadb']['max_connections'],
     )
     notifies :restart, 'service[mariadb]'
@@ -139,7 +139,7 @@ when 'rhel'
   end
 
   package %w[php72w php72w-cli php72w-common php72w-curl php72w-gd php72w-mbstring
-             php72w-process php72w-snmp net-snmp ImageMagick jwhois nmap mtr 
+             php72w-process php72w-snmp net-snmp ImageMagick jwhois nmap mtr
              rrdtool MySQL-python net-snmp-utils composer cronie fping git unzip
              php72w-mysqlnd php72w-xml php72w-zip] do
     action :install
@@ -162,7 +162,7 @@ when 'rhel'
 
     [Service]
     PIDFile=/var/run/rrdcached.pid
-    ExecStart=/usr/sbin/rrdcached #{node['librenms']['rrdcached']['options']} -s #{node['librenms']['user']} -U #{node['librenms']['user']} -G #{node['librenms']['group']} -b #{node['librenms']['root_dir']}/librenms-#{librenms_version}/rrd
+    ExecStart=/usr/sbin/rrdcached -s #{librenms_username} -U #{librenms_username} -G #{librenms_group} #{node['librenms']['rrdcached']['options']} -b #{librenms_rrddir}
     User=root
 
     [Install]
@@ -170,7 +170,7 @@ when 'rhel'
 
     FOO
 
-    action %i[create enable]
+    action %i[create enable start]
     only_if { node['librenms']['rrdcached']['enabled'] }
   end
 
@@ -192,7 +192,7 @@ end
 ark 'librenms' do
   url "#{node['librenms']['install']['url']}/#{librenms_file}"
   path librenms_rootdir
-  mode 0755
+  mode '0755'
   checksum node['librenms']['install']['checksum'] unless node['librenms']['install']['checksum'].nil?
   version librenms_version
   owner librenms_username
@@ -236,7 +236,7 @@ template librenms_phpconf do
   group 'root'
   variables(
     memory_limit: node['librenms']['phpini']['memory_limit'],
-    timezone: node['librenms']['phpini']['timezone'],
+    timezone:     node['librenms']['phpini']['timezone'],
   )
   mode '0644'
   case node['platform_family']
@@ -252,7 +252,11 @@ template '/tmp/create_db.sql' do
   owner 'root'
   group 'root'
   mode '0644'
-  variables(password: node['mariadb']['user_librenms']['password'])
+  variables(
+    username: node['mariadb']['user_librenms']['username'],
+    password: node['mariadb']['user_librenms']['password'],
+    dbname:   node['mariadb']['database']['name'],
+  )
 end
 
 execute 'create_db' do
