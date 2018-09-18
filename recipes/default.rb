@@ -306,7 +306,7 @@ end
 web_app 'librenms' do
   server_port node['librenms']['web']['port']
   server_name node['hostname']
-  server_alias node['librenms']['web']['name']
+  server_aliases node['librenms']['web']['name']
   docroot "#{librenms_homedir}/html"
   directory_options node['librenms']['web']['options']
   allow_override node['librenms']['web']['override']
