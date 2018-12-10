@@ -5,6 +5,7 @@
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
 include_recipe 'apache2'
+include_recipe 'facl'
 include_recipe 'logrotate'
 
 librenms_rootdir = node['librenms']['root_dir']
@@ -13,6 +14,7 @@ librenms_logdir = ::File.join(librenms_homedir, 'logs')
 librenms_rrddir = node['librenms']['rrd_dir']
 librenms_bootstrap_cachedir = node['librenms']['bootstrap_cache_dir']
 librenms_storagedir = node['librenms']['storage_dir']
+librenms_directories = [librenms_logdir, librenms_rrddir, librenms_bootstrap_cachedir, librenms_storagedir]
 librenms_username = node['librenms']['user']
 librenms_group = node['librenms']['group']
 librenms_version = node['librenms']['install']['version']
@@ -200,27 +202,23 @@ ark 'librenms' do
   action :put
 end
 
-directory librenms_rrddir do
-  owner librenms_username
-  group librenms_group
-  mode '0755'
-  action :create
-  not_if { ::File.exist? librenms_rrddir }
-end
+librenms_directories.each do |dir|
+  directory dir do
+    owner librenms_username
+    group librenms_group
+    mode '0775'
+    recursive true
+    action :create
+    not_if { ::File.exist? dir }
+  end
 
-directory librenms_bootstrap_cachedir do
-  owner librenms_username
-  group librenms_group
-  mode '0755'
-  recursive true
-  action :create
-end
-
-directory librenms_storagedir do
-  owner librenms_username
-  group librenms_group
-  mode '0755'
-  action :create
+  facl dir do
+    user :'' => 'rwx'
+    group :'' => 'rwx'
+    mask :'' => 'rwx'
+    other :'' => 'r'
+    recurse true
+  end
 end
 
 file ::File.join(librenms_homedir, '.env') do
