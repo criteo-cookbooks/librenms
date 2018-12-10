@@ -359,16 +359,16 @@ execute 'install composer dependencies' do
   action :run
   command 'php scripts/composer_wrapper.php install --no-dev'
   cwd librenms_homedir
-  user 'root'
-  group 'root'
+  user librenms_username
+  group librenms_group
 end
 
 execute 'build base' do
   action :run
   command 'php build-base.php'
   cwd librenms_homedir
-  user 'root'
-  group 'root'
+  user librenms_username
+  group librenms_group
 end
 
 execute 'adduser admin' do
@@ -380,8 +380,8 @@ execute 'adduser admin' do
     'LIBRE_PASS' => node['librenms']['user_pass'],
     'LIBRE_MAIL' => node['librenms']['contact'],
   )
-  user 'root'
-  group 'root'
+  user librenms_username
+  group librenms_group
 end
 
 include_recipe 'librenms::cron'
