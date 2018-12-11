@@ -4,7 +4,7 @@
 # - submit the change in the code_generator
 
 AllCops:
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.4
 
 
 # This requires to alphabetically sort Gem's requirements
@@ -23,7 +23,9 @@ Metrics/LineLength:
 # Based on data from http://sideeffect.kr/popularconvention#ruby
 #
 ### Comma after each line in a list
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: comma
+Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: comma
 # It is very common to add key/value pairs to hashes in Chef attributes. Making
 # sure each line has a comma diminishes the chance of someone making an error
