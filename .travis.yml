@@ -4,7 +4,6 @@ rvm:
 - 2.3.2
 deploy:
   skip_cleanup: true
-  edge: true
   edge:
     source: criteo-forks/dpl
     branch: chef_ruby2

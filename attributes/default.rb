@@ -51,8 +51,8 @@ default['yum']['epel']['enabled'] = true
 
 # downloading librenms
 default['librenms']['install']['url'] = 'https://github.com/librenms/librenms/archive/'
-default['librenms']['install']['version'] = '1.35'
-default['librenms']['install']['checksum'] = '72019d9b58b145b617b1e9bfe7f39bd01c9fe5c254e561ef0c80b0a3eb56ac3f'
+default['librenms']['install']['version'] = '1.46'
+default['librenms']['install']['checksum'] = '0583bf4ccca54f65ed9287d1848d4bfc3f8343e9311907dcfe46932932e6b704'
 # override this with the proper archive checksum if you install a
 # specific version and care about checksums.
 default['librenms']['install']['checksum'] = nil
