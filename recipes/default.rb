@@ -180,6 +180,12 @@ group librenms_group do
   action :create
 end
 
+group librenms_group do
+  action :modify
+  members 'apache'
+  append true
+end
+
 user librenms_username do
   action :create
   comment 'LibreNMS user'
