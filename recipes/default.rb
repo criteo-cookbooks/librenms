@@ -5,7 +5,6 @@
 # Copyright:: 2017, The Authors, All Rights Reserved.
 
 include_recipe 'apache2'
-include_recipe 'facl'
 include_recipe 'logrotate'
 
 librenms_rootdir = node['librenms']['root_dir']
@@ -216,14 +215,6 @@ librenms_directories.each do |dir|
     recursive true
     action :create
     not_if { ::File.exist? dir }
-  end
-
-  facl dir do
-    user :'' => 'rwx'
-    group :'' => 'rwx'
-    mask :'' => 'rwx'
-    other :'' => 'r'
-    recurse true
   end
 end
 
