@@ -143,11 +143,11 @@ when 'rhel'
              php72w-process php72w-snmp net-snmp ImageMagick jwhois nmap mtr
              rrdtool MySQL-python net-snmp-utils composer cronie fping git unzip
              php72w-mysqlnd php72w-xml php72w-zip] do
-    action :install
+    action node['librenms']['package']['default_action']
   end
 
   package 'php70w-ldap' do
-    action :install
+    action node['librenms']['package']['default_action']
     only_if { node['librenms']['auth_ad']['enabled'] }
   end
 
@@ -155,22 +155,19 @@ when 'rhel'
     filename 'libphp7.so'
   end
 
-  systemd_unit 'rrdcached.service' do
-    content <<-FOO.gsub(/^\s+/, '')
-    [Unit]
-    Description=Data caching daemon for rrdtool
-    After=network.service
-
-    [Service]
-    PIDFile=/var/run/rrdcached.pid
-    ExecStart=/usr/sbin/rrdcached -s #{librenms_username} -U #{librenms_username} -G #{librenms_group} #{node['librenms']['rrdcached']['options']} -b #{librenms_rrddir}
-    User=root
-
-    [Install]
-    WantedBy=default.target
-
-    FOO
-
+  systemd_service 'rrdcached' do
+    unit do
+      description 'Data caching daemon for rrdtool'
+      after       'network.target'
+    end
+    service do
+      pid_file   '/var/run/rrdcached.pid'
+      exec_start "#{node['librenms']['rrdcached']['binary_path']} -s #{librenms_username} -U #{librenms_username} -G #{librenms_group} " \
+                 "#{node['librenms']['rrdcached']['options']} -b #{librenms_rrddir}"
+    end
+    install do
+      wanted_by 'default.target'
+    end
     action %i[create enable start]
     only_if { node['librenms']['rrdcached']['enabled'] }
   end

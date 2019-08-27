@@ -49,6 +49,9 @@ default['librenms']['repo_opennms']['desc'] = 'OpenNMS repo EL7'
 default['librenms']['repo_opennms']['gpgkey'] = 'https://yum.opennms.org/OPENNMS-GPG-KEY'
 default['yum']['epel']['enabled'] = true
 
+# package option
+default['librenms']['package']['default_action'] = :install
+
 # downloading librenms
 default['librenms']['install']['url'] = 'https://github.com/librenms/librenms/archive/'
 default['librenms']['install']['version'] = '1.46'
@@ -94,6 +97,7 @@ default['librenms']['cron']['check']['minute'] = '*/5'
 default['librenms']['rrdcached']['enabled'] = false
 default['librenms']['rrdcached']['config_file'] = '/etc/sysconfig/rrdcached'
 default['librenms']['rrdcached']['options'] = '-w 1800 -z 1800 -f 3600 -B -R -j /var/tmp -l unix:/var/run/rrdcached/rrdcached.sock -t 4 -F'
+default['librenms']['rrdcached']['binary_path'] = '/usr/bin/rrdcached'
 
 # autodiscover switches
 default['librenms']['autodiscover']['xdp'] = false
