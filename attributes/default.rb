@@ -49,6 +49,9 @@ default['librenms']['repo_opennms']['desc'] = 'OpenNMS repo EL7'
 default['librenms']['repo_opennms']['gpgkey'] = 'https://yum.opennms.org/OPENNMS-GPG-KEY'
 default['yum']['epel']['enabled'] = true
 
+# package option
+default['librenms']['package']['default_action'] = :install
+
 # downloading librenms
 default['librenms']['install']['url'] = 'https://github.com/librenms/librenms/archive/'
 default['librenms']['install']['version'] = '1.46'

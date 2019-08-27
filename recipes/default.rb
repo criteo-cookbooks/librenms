@@ -143,11 +143,11 @@ when 'rhel'
              php72w-process php72w-snmp net-snmp ImageMagick jwhois nmap mtr
              rrdtool MySQL-python net-snmp-utils composer cronie fping git unzip
              php72w-mysqlnd php72w-xml php72w-zip] do
-    action :install
+    action node['librenms']['package']['default_action']
   end
 
   package 'php70w-ldap' do
-    action :install
+    action node['librenms']['package']['default_action']
     only_if { node['librenms']['auth_ad']['enabled'] }
   end
 
