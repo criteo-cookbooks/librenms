@@ -4,6 +4,8 @@ default['mariadb']['user_librenms']['username'] = 'librenms'
 default['mariadb']['user_librenms']['password'] = 'default'
 default['mariadb']['bind_address'] = '127.0.0.1'
 default['mariadb']['max_connections'] = 302
+default['mariadb']['max_connect_errors'] = 1000
+default['mariadb']['wait_timeout'] = 60
 
 default['librenms']['root_dir'] = '/var/opt'
 default['librenms']['path'] = ::File.join(node['librenms']['root_dir'], 'librenms')
