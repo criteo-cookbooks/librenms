@@ -178,6 +178,12 @@ when 'rhel'
 
 end
 
+# dependency for pollers
+python_package 'PyMySQL' do
+  version '0.10.1'
+  user 'root'
+end
+
 group librenms_group do
   action :create
 end
