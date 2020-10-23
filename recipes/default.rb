@@ -6,6 +6,7 @@
 
 include_recipe 'apache2'
 include_recipe 'logrotate'
+include_recipe 'facl'
 
 librenms_rootdir = node['librenms']['root_dir']
 librenms_homedir = ::File.join(node['librenms']['root_dir'], 'librenms')
@@ -216,6 +217,14 @@ librenms_directories.each do |dir|
     recursive true
     action :create
     not_if { ::File.exist? dir }
+  end
+
+  # enforce right permissions
+
+  facl dir do
+    group   :'' => 'rwx'
+    default :group => { :'' => 'rwx' }
+    recurse true
   end
 end
 
