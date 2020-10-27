@@ -6,6 +6,7 @@
 
 include_recipe 'apache2'
 include_recipe 'logrotate'
+include_recipe 'facl'
 
 librenms_rootdir = node['librenms']['root_dir']
 librenms_homedir = ::File.join(node['librenms']['root_dir'], 'librenms')
@@ -28,7 +29,7 @@ when 'debian'
 
   package %w[composer fping git graphviz imagemagick libapache2-mod-php7.0 mariadb-client mariadb-server
              mtr-tiny nmap php7.0-cli php7.0-curl php7.0-gd php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql
-             php7.0-snmp php7.0-xml php7.0-zip python-memcache python-mysqldb rrdtool snmp snmpd whois] do
+             php7.0-snmp php7.0-xml php7.0-zip python-memcache python3-PyMySQL rrdtool snmp snmpd whois] do
     action :install
   end
 
@@ -216,6 +217,14 @@ librenms_directories.each do |dir|
     recursive true
     action :create
     not_if { ::File.exist? dir }
+  end
+
+  # enforce right permissions
+
+  facl dir do
+    group   :'' => 'rwx'
+    default :group => { :'' => 'rwx' }
+    recurse true
   end
 end
 
