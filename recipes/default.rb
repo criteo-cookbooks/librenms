@@ -29,7 +29,7 @@ when 'debian'
 
   package %w[composer fping git graphviz imagemagick libapache2-mod-php7.0 mariadb-client mariadb-server
              mtr-tiny nmap php7.0-cli php7.0-curl php7.0-gd php7.0-json php7.0-mbstring php7.0-mcrypt php7.0-mysql
-             php7.0-snmp php7.0-xml php7.0-zip python-memcache python3-PyMySQL rrdtool snmp snmpd whois] do
+             php7.0-snmp php7.0-xml php7.0-zip rrdtool snmp snmpd whois] do
     action :install
   end
 
@@ -146,7 +146,7 @@ when 'rhel'
 
   package %w[php72w php72w-cli php72w-common php72w-curl php72w-gd php72w-mbstring
              php72w-process php72w-snmp net-snmp ImageMagick jwhois nmap mtr
-             rrdtool MySQL-python net-snmp-utils composer cronie fping git unzip
+             rrdtool net-snmp-utils composer cronie fping git unzip
              php72w-mysqlnd php72w-xml php72w-zip] do
     action node['librenms']['package']['default_action']
   end
@@ -177,6 +177,24 @@ when 'rhel'
     only_if { node['librenms']['rrdcached']['enabled'] }
   end
 
+end
+
+python_package 'PyMySQL' do
+  python '/usr/bin/python3'
+  version '0.10.1'
+  user 'root'
+end
+
+python_package 'redis' do
+  python '/usr/bin/python3'
+  version '3.5.3'
+  user 'root'
+end
+
+python_package 'python-memcached' do
+  python '/usr/bin/python3'
+  version '1.59'
+  user 'root'
 end
 
 group librenms_group do
