@@ -6,6 +6,7 @@ default['mariadb']['bind_address'] = '127.0.0.1'
 default['mariadb']['max_connections'] = 302
 default['mariadb']['max_connect_errors'] = 1000
 default['mariadb']['wait_timeout'] = 600
+default['mariadb']['datadir'] = '/var/lib/mysql'
 
 default['librenms']['root_dir'] = '/var/opt'
 default['librenms']['path'] = ::File.join(node['librenms']['root_dir'], 'librenms')
@@ -134,3 +135,11 @@ default['librenms']['auth_radius']['default_level'] = 1
 
 # Syslog
 default['librenms']['syslog']['enabled'] = false
+
+# Cleanup options
+default['librenms']['syslog_purge'] = 30
+default['librenms']['eventlog_purge'] = 30
+default['librenms']['authlog_purge'] = 30
+default['librenms']['device_perf_purge'] = 7
+default['librenms']['rrd_purge'] = false
+default['librenms']['ports_purge'] = false

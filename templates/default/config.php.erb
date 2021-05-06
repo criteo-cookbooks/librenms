@@ -71,6 +71,13 @@ $config['radius']['default_level']        = <%= @radius_default_lvl %>;
 $config['auth_mechanism'] = "mysql"; # default, other options: ldap, http-auth
 <% end %>
 
+$config['syslog_purge']                   = <%= @syslog_purge %>;
+$config['eventlog_purge']                 = <%= @eventlog_purge %>;
+$config['authlog_purge']                  = <%= @authlog_purge %>;
+$config['device_perf_purge']              = <%= @device_perf_purge %>;
+$config['rrd_purge']                      = <%= @rrd_purge %>;
+$config['ports_purge']                    = <%= @ports_purge %>;
+
 <% if ( @add_conf_file_path != '' ) %>
 if(file_exists( __DIR__ . DIRECTORY_SEPARATOR .  '<%= @add_conf_file_path %>')) {
     include __DIR__ . DIRECTORY_SEPARATOR .  '<%= @add_conf_file_path %>';
