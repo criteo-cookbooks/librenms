@@ -79,6 +79,7 @@ when 'debian'
       max_connections:    node['mariadb']['max_connections'],
       max_connect_errors: node['mariadb']['max_connect_errors'],
       wait_timeout:       node['mariadb']['wait_timeout'],
+      datadir:            node['mariadb']['datadir'],
     )
     notifies :restart, 'service[mysql]'
   end
@@ -123,6 +124,7 @@ when 'rhel'
       max_connections:    node['mariadb']['max_connections'],
       max_connect_errors: node['mariadb']['max_connect_errors'],
       wait_timeout:       node['mariadb']['wait_timeout'],
+      datadir:            node['mariadb']['datadir'],
     )
     notifies :restart, 'service[mariadb]'
   end
