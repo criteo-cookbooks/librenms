@@ -135,3 +135,11 @@ default['librenms']['auth_radius']['default_level'] = 1
 
 # Syslog
 default['librenms']['syslog']['enabled'] = false
+
+# Cleanup options
+default['librenms']['syslog_purge'] = 30
+default['librenms']['eventlog_purge'] = 30
+default['librenms']['authlog_purge'] = 30
+default['librenms']['device_perf_purge'] = 7
+default['librenms']['rrd_purge'] = false
+default['librenms']['ports_purge'] = false

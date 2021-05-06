@@ -377,6 +377,12 @@ template librenms_phpconfigfile do
     radius_default_lvl: node['librenms']['auth_radius']['default_level'],
     add_conf_file_path: node['librenms']['add_config_file']['path'],
     rrddir:             node['librenms']['rrd_dir'],
+    syslog_purge:       node['librenms']['syslog_purge'],
+    eventlog_purge:     node['librenms']['eventlog_purge'],
+    authlog_purge:      node['librenms']['authlog_purge'],
+    device_perf_purge:  node['librenms']['device_perf_purge'],
+    rrd_purge:          node['librenms']['rrd_purge'],
+    ports_purge:        node['librenms']['ports_purge'],
   )
 end
 
