@@ -39,4 +39,7 @@ platforms:
       image_id: ami-d2c924b2
 
 suites:
-<%= require 'erubis'; Erubis::Eruby.new(File.read('.kitchen_suites.yml')).evaluate %>
+- name: default
+  run_list:
+    - recipe[librenms::default]
+  attributes:
