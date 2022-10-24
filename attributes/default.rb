@@ -1,4 +1,3 @@
-
 default['mariadb']['database']['name'] = 'librenms'
 default['mariadb']['user_librenms']['username'] = 'librenms'
 default['mariadb']['user_librenms']['password'] = 'default'
@@ -31,7 +30,7 @@ default['librenms']['env']['DB_HOST'] = 'localhost'
 default['librenms']['env']['DB_DATABASE'] = node['mariadb']['database']['name']
 default['librenms']['env']['DB_USERNAME'] = node['mariadb']['user_librenms']['username']
 default['librenms']['env']['DB_PASSWORD'] = node['mariadb']['user_librenms']['password']
-default['librenms']['env']['APP_URL'] = 'http://' + node['librenms']['web']['name'] + '/'
+default['librenms']['env']['APP_URL'] = "http://#{node['librenms']['web']['name']}/"
 
 # snmpd
 default['librenms']['snmp']['community'] = 'public'
