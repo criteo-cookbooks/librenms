@@ -1,4 +1,0 @@
-- name: default
-  run_list:
-    - recipe[librenms::default]
-  attributes:

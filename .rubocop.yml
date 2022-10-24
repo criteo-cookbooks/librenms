@@ -4,8 +4,7 @@
 # - submit the change in the code_generator
 
 AllCops:
-  TargetRubyVersion: 2.4
-
+  TargetRubyVersion: 2.7
 
 # This requires to alphabetically sort Gem's requirements
 Bundler/OrderedGems:
@@ -17,7 +16,7 @@ Style/FrozenStringLiteralComment:
   Enabled: false
 
 ### Disable line length constraint
-Metrics/LineLength:
+Layout/LineLength:
   Max: 180
 # Because we're not in the 80s anymore.
 # Based on data from http://sideeffect.kr/popularconvention#ruby
@@ -45,7 +44,7 @@ Style/TrailingCommaInHashLiteral:
 #   }
 #
 ### Align hashes as a table
-Layout/AlignHash:
+Layout/HashAlignment:
   EnforcedColonStyle: table
   EnforcedHashRocketStyle: key
 # When dealing with long key names, it is easier to read hashes in colon
@@ -96,11 +95,6 @@ Style/FormatString:
 
 # Really practical. Use with moderation though for readability
 Style/MultilineBlockChain:
-  Enabled: false
-
-# We ain't serving subseconds requests. Forcing to use tr instead of gsub will
-# be annoying without much value
-Performance/StringReplacement:
   Enabled: false
 
 # We don't write documentation there at the moment
