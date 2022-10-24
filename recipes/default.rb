@@ -242,8 +242,8 @@ librenms_directories.each do |dir|
   # enforce right permissions
 
   facl dir do
-    group   :'' => 'rwx'
-    default :group => { :'' => 'rwx' }
+    group   '': 'rwx'
+    default group: { '': 'rwx' }
     recurse true
   end
 end
